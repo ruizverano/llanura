@@ -54,6 +54,18 @@ services:
       - lamp-network
     entrypoint: ["tail", "-f", "/dev/null"]  # Mantener el contenedor en ejecución
 
+  node:
+    image: node:16
+    container_name: node
+    ports:
+      - "5174:5174"
+    volumes:
+      - ./laravel:/app
+    working_dir: /app
+    networks:
+      - lamp-network
+    entrypoint: ["tail", "-f", "/dev/null"]
+
 volumes:
   db-data:
 
