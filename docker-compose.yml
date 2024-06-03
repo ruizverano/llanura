@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 
 services:
   app:
@@ -8,8 +8,9 @@ services:
     container_name: app
     ports:
       - "8080:80"
+      - "8000:8000"
     volumes:
-      - ./laravel:/var/www/html
+      - ./llanura-app:/var/www/html
       - ./docker/php/vhost.conf:/etc/apache2/sites-available/000-default.conf
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     environment:
@@ -49,7 +50,7 @@ services:
     image: composer:latest
     container_name: composer
     volumes:
-      - ./laravel:/app
+      - ./llanura-app:/app
     networks:
       - lamp-network
     entrypoint: ["tail", "-f", "/dev/null"]
@@ -60,10 +61,11 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./laravel:/app
+      - ./llanura-app:/app
     working_dir: /app
     networks:
       - lamp-network
+    #command: npm run dev
     entrypoint: ["tail", "-f", "/dev/null"]
 
 volumes:
