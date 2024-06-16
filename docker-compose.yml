@@ -56,7 +56,7 @@ services:
     entrypoint: ["tail", "-f", "/dev/null"]
 
   node:
-    image: node:18
+    image: node:latest
     container_name: node
     ports:
       - "5173:5173"
