@@ -3,20 +3,21 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: app
+    container_name: php-app
     ports:
       - "8080:80"
       - "8000:8000"
     volumes:
       - ./llanura-ph:/var/www/html
-      - ./docker/php/vhost.conf:/etc/apache2/sites-available/000-default.conf
-      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./php/vhost.conf:/etc/apache2/sites-available/000-default.conf
+      - ./php/php.ini:/usr/local/etc/php/php.ini
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
     networks:
       - lamp-network
     depends_on:
       - db
+    command: php artisan serve --host=0.0.0.0 --port=8000
 
   db:
     image: mysql:5.7
@@ -63,8 +64,7 @@ services:
     working_dir: /app
     networks:
       - lamp-network
-    #command: npm run dev
-    entrypoint: ["tail", "-f", "/dev/null"]
+    command: npm run dev    
 
 volumes:
   db-data:
