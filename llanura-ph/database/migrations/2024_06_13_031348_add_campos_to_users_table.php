@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('usuario',255);
+        Schema::table('users', function (Blueprint $table) {            
+            $table->string('usuario')->unique();
             $table->unsignedBigInteger('rol_id')->nullable();
             $table->foreign('rol_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->string('telefono',15);
-            $table->string('torre',50);
-            $table->string('apartamento',50);
+            $table->string('telefono');
+            $table->string('torre');
+            $table->string('apartamento');
         });
     }
 
