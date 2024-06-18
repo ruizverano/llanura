@@ -12,7 +12,7 @@ function App() {
         <AuthProvider>
             <Router>
                 <Switch>
-                    <ProtectedRoute path="/super-admin" component={SuperAdminDashboard} role={1} />
+                    <ProtectedRoute path="/admin" component={SuperAdminDashboard} role={1} />
                     <ProtectedRoute path="/residente" component={ResidenteDashboard} role={2} />
                     <ProtectedRoute path="/portero" component={PorteroDashboard} role={3} />
                     <Route path="/" component={HomePage} />

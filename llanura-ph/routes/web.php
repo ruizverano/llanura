@@ -38,14 +38,27 @@ require __DIR__.'/auth.php';
 
 
 // API routes for role-based access
-Route::middleware(['auth', CheckRole::class.':1'])->group(function () {
-    Route::get('/api/super-admin', [SuperAdminController::class, 'index']);
+// Route::middleware(['auth', CheckRole::class.':1'])->group(function () {
+//     Route::get('/api/admin', [SuperAdminController::class, 'index']);
+// });
+
+// Route::middleware(['auth', CheckRole::class.':2'])->group(function () {
+//     Route::get('/api/residente', [ResidenteController::class, 'index']);
+// });
+
+// Route::middleware(['auth', CheckRole::class.':3'])->group(function () {
+//     Route::get('/api/portero', [PorteroController::class, 'index']);
+// });
+
+
+Route::middleware(['auth', 'checkRole:1'])->group(function () {
+    Route::get('/super-admin', [SuperAdminController::class, 'index']);
 });
 
-Route::middleware(['auth', CheckRole::class.':2'])->group(function () {
-    Route::get('/api/residente', [ResidenteController::class, 'index']);
+Route::middleware(['auth', 'checkRole:2'])->group(function () {
+    Route::get('/residente', [ResidenteController::class, 'index']);
 });
 
-Route::middleware(['auth', CheckRole::class.':3'])->group(function () {
-    Route::get('/api/portero', [PorteroController::class, 'index']);
+Route::middleware(['auth', 'checkRole:3'])->group(function () {
+    Route::get('/portero', [PorteroController::class, 'index']);
 });
