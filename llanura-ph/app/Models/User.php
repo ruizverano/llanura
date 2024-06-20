@@ -24,7 +24,8 @@ class User extends Authenticatable
         'rod_id',
         'telefono',
         'torre',
-        'apartamento'
+        'apartamento',
+        'rol_id'
     ];
 
     /**

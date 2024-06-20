@@ -175,15 +175,15 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">                    
-                    <InputLabel htmlFor="rol" value="Rol" />
+                    <InputLabel htmlFor="rol_id" value="Rol" />
 
                     <Select
-                        id="rol"
-                        name="rol"
-                        value={data.rol}
+                        id="rol_id"
+                        name="rol_id"
+                        value={data.rol_id}
                         className="mt-1 block w-full"
-                        autoComplete="rol"
-                        onChange={(e) => {setData('rol', e.target.value); console.log("valor: "+e.target.value)}}
+                        autoComplete="rol_id"
+                        onChange={(e) => {setData('rol_id', e.target.value); console.log("valor: "+e.target.value)}}
                         options={opcionesRoles} 
                         required   
                     />

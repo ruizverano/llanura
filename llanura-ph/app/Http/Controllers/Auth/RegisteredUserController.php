@@ -38,18 +38,18 @@ class RegisteredUserController extends Controller
             'telefono' => 'required|string|max:255',
             'torre' => 'required',
             'apto' => 'required',
-            'rol' => 'required',
+            'rol_id' => 'required',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-             'usuario' => $request->usuario,
-             'telefono' => $request->telefono,
-             'torre' => $request->torre,
-             'apartamento' => $request->apto,
-             'rol' => $request->rol,
+            'usuario' => $request->usuario,
+            'telefono' => $request->telefono,
+            'torre' => $request->torre,
+            'apartamento' => $request->apto,
+            'rol_id' => $request->rol_id,
         ]);
 
         event(new Registered($user));
