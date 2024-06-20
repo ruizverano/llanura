@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
+      dockerfile: ./php/Dockerfile
     container_name: php-app
     ports:
       - "8080:80"
