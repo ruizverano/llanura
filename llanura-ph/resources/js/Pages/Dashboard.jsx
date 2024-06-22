@@ -3,6 +3,8 @@ import AdminDashboard from '@/Components/actores/AdminDashboard';
 import PorteroDashboard from '@/Components/actores/PorteroDashboard';
 import ResidenteDashboard from '@/Components/actores/ResidenteDashboard';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import BotonEnlace from '@/Components/BotonEnlace';
+
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
@@ -22,19 +24,21 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">LLANURA-PH</h2>}
+            header={<h2 className="m:px-6 lg:px-8 flex items-center justify-center font-semibold text-xl text-gray-800 leading-tight">LLANURA-PH</h2>}
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="py-12 fondoDashBoard">
+                <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">{auth.user.name} está logeado</div>
-                        
-                        { interfazAdmin && (
+                        <div className="max-w-2xl mx-auto sm:px-6 lg:px-8 flex items-center justify-center">
+                        { interfazAdmin && ( 
+                         
                             <AdminDashboard
                                 user={auth.user}
-                            />
+                            />                                                  
+                            
                         )}
                         
                         { interfazPortero && (
@@ -47,9 +51,18 @@ export default function Dashboard({ auth }) {
                             <ResidenteDashboard 
                                 user={auth.user}
                             />
-                        )}
-                        
+                        )}                          
+                        </div>
                     </div>
+                    <div>
+                        <BotonEnlace
+                            tipo={"boton-logout"} 
+                            method="post" 
+                            href={route('logout')} 
+                            as="button"
+                            texto={"Cerrar Sesión"}
+                        />                                           
+                    </div>                    
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -10,6 +10,9 @@ export default function Guest({ children }) {
                 </div>
                 {children}
             </div>
+            <footer className="py-16 text-center text-sm text-black dark:text-white/70">
+                <p>© 2024 Llanura P.H. Todos los derechos reservados. Juan Carlos Alvarado Garzón</p>
+            </footer>
         </div>
     );
 }
