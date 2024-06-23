@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ResidenteController;
 use App\Http\Controllers\PorteroController;
+use App\Http\Controllers\ComunicacionesController;
 use App\Http\Middleware\CheckRole;
 
 /* Route::get('/', function () {
@@ -35,6 +36,13 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+// Route::middleware(['auth'])->group(function (){
+//     Route::get('/comunicaciones', [ComunicacionesController::class, 'create'])->name('comunicaciones.create');
+//     Route::post('/comunicaciones', [ComunicacionesController::class, 'store'])->name('comunicaciones.store');
+//});
 
 
 // API routes for role-based access

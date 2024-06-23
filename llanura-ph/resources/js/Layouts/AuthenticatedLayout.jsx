@@ -19,7 +19,7 @@ export default function Authenticated({ user, header, children }) {
                                     Principal
                                 </NavLink>
 
-                                <NavLink href={route('register')} active={route().current('register')}>
+                                <NavLink href={route('comunicaciones.create')} active={route().current('comunicaciones.create')}>
                                     Comunicados
                                 </NavLink>
                             </div>
