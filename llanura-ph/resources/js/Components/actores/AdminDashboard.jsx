@@ -22,7 +22,7 @@ const AdminDashboard = (props) => {
             <div className="flex items-center justify-center mt-4">
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
-                    //method="post" 
+                    method="get"
                     //href={route('#')} 
                     as="button"
                     texto ={"Gestión de Correspondencia"}
