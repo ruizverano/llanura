@@ -35,4 +35,11 @@ class ComunicacionesController extends Controller
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
+
+    public function getComunicaciones(Request $request){
+        $destinatario = $request->input('usuario');
+        $mensajes = Comunicaciones::where('destinatario', $$destinatario)->get();
+
+        return response()->json($mensajes);
+    }
 }

@@ -66,4 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::post('comunicaciones', [ComunicacionesController::class, 'store'])
     ->middleware(['auth', 'verified'])->name('comunicaciones.store');
 
+    Route::post('get-comunicaciones}', [ComunicacionesController::class, 'getComunicaciones']);
+
 });

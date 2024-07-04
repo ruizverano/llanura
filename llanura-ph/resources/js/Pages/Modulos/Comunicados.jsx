@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
+import ListaComunicados from '@/Components/comunicados/ListaComunicados';
 
 export default function Comunicados ({ auth }) {
 
@@ -13,7 +14,7 @@ export default function Comunicados ({ auth }) {
 
     useEffect(() => {
         setInterfazAdmin(nro_rol === 1);
-        setInterfazPortero(nro_rol === 2);
+        setInterfazPortero(nro_rol === 2); 
         setInterfazResidente(nro_rol === 3);
     }, []);
 
@@ -28,6 +29,9 @@ export default function Comunicados ({ auth }) {
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">{auth.user.name} está logeado</div>
+                            <div className="flex justify-center">
+                                <ListaComunicados/>                                
+                            </div>
                             <div className="flex justify-center">
                                 <FormularioComunicados auth={auth}/>
                             </div>
