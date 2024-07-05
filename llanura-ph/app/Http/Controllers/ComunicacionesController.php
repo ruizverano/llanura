@@ -38,7 +38,7 @@ class ComunicacionesController extends Controller
 
     public function getComunicaciones(Request $request){
         $destinatario = $request->input('usuario');
-        $mensajes = Comunicaciones::where('destinatario', $$destinatario)->get();
+        $mensajes = Comunicaciones::where('destinatario', $destinatario)->get();
 
         return response()->json($mensajes);
     }
