@@ -14,7 +14,7 @@ class ComunicacionesController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Modulos/Comunicados');
+        return Inertia::render('Modulos/Comunicados');        
     }
 
 

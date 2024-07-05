@@ -1,4 +1,5 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
@@ -18,7 +19,7 @@ export default function Comunicados ({ auth }) {
         setInterfazResidente(nro_rol === 3);
     }, []);
 
-    return(
+    return (
         <AuthenticatedLayout
             user={auth.user}
             header={<h2 className="m:px-6 lg:px-8 flex items-center justify-center font-semibold text-xl text-gray-800 leading-tight">LLANURA-PH</h2>}
@@ -29,15 +30,20 @@ export default function Comunicados ({ auth }) {
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">{auth.user.name} está logeado</div>
-                            <div className="flex justify-center">
-                                <ListaComunicados/>                                
-                            </div>
-                            <div className="flex justify-center">
-                                <FormularioComunicados auth={auth}/>
-                            </div>
-                        </div>                    
+                        <div className="flex justify-center">
+                            <Router>
+                                <Routes>
+                                    {/* Asegúrate de que la ruta y el componente estén correctamente configurados */}
+                                    <Route path="/comunicaciones" element={<ListaComunicados name = {auth.user.name}/>} />
+                                </Routes>
+                            </Router>
+                        </div>
+                        <div className="flex justify-center">
+                            <FormularioComunicados auth={auth} />
+                        </div>
+                    </div>
                 </div>
             </div>
-            </AuthenticatedLayout>
+        </AuthenticatedLayout>
     );
 }
