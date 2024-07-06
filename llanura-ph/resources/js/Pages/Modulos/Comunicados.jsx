@@ -4,6 +4,8 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
 import ListaComunicados from '@/Components/comunicados/ListaComunicados';
+import { Button } from '@mui/material';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Comunicados ({ auth }) {
 
@@ -12,6 +14,8 @@ export default function Comunicados ({ auth }) {
     const [interfazAdmin, setInterfazAdmin] = useState(false);
     const [interfazPortero, setInterfazPortero] = useState(false);
     const [interfazResidente, setInterfazResidente] = useState(false);
+
+    const [mostrarFormulario, setMostrarFormulario]= useState(false);
 
     useEffect(() => {
         setInterfazAdmin(nro_rol === 1);
@@ -32,15 +36,23 @@ export default function Comunicados ({ auth }) {
                         <div className="p-6 text-gray-900">{auth.user.name} está logeado</div>
                         <div className="flex justify-center">
                             <Router>
-                                <Routes>
-                                    {/* Asegúrate de que la ruta y el componente estén correctamente configurados */}
+                                <Routes>                                    
                                     <Route path="/comunicaciones" element={<ListaComunicados name = {auth.user.name}/>} />
                                 </Routes>
-                            </Router>
+                            </Router>                            
                         </div>
-                        <div className="flex justify-center">
-                            <FormularioComunicados auth={auth} />
-                        </div>
+
+                        <PrimaryButton
+                            onClick = {() => setMostrarFormulario(!mostrarFormulario)}
+                            className="ms-4">
+                            Nuevo mensaje
+                        </PrimaryButton>
+                        
+                        { mostrarFormulario && (
+                            <div className="flex justify-center">
+                                <FormularioComunicados auth={auth} />
+                            </div>
+                        )}                        
                     </div>
                 </div>
             </div>

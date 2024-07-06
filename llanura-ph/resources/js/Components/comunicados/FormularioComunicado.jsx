@@ -7,7 +7,14 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function FormularioComunicados(props){
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { 
+        data, 
+        setData, 
+        post, 
+        processing, 
+        errors, 
+        reset,         
+    } = useForm({
         destinatario: '',
         asunto: '',
         comunicado: ''
@@ -18,11 +25,13 @@ export default function FormularioComunicados(props){
             reset('destinatario', 'asunto', 'comunicado');
         };
     }, []);
+    
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('comunicaciones.store'));
+        alert("Mensaje enviado a "+data.destinatario);
+        reset('destinatario', 'asunto', 'comunicado');
     };
 
     return(
@@ -72,7 +81,8 @@ export default function FormularioComunicados(props){
             </div>
 
             <div className="flex items-center justify-end mt-4">
-                <PrimaryButton className="ms-4" disabled={processing}>
+                <PrimaryButton className="ms-4" 
+                    disabled={processing}>
                     Enviar
                 </PrimaryButton>
             </div>

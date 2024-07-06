@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+    InputLabel,
   } from '@mui/material';
 
 export default function ListaComunicados(props){
@@ -18,7 +19,7 @@ export default function ListaComunicados(props){
           method:'POST',
           headers: {
             'Content-Type': 'application/json',
-            //'X-CSRF-TOKEN': csrfToken,
+            'X-CSRF-TOKEN': csrfToken,
           },
           body: JSON.stringify({usuario: props.name}),
         });
@@ -36,9 +37,11 @@ export default function ListaComunicados(props){
   },[]);
 
     
-      return (        
+      return (
+
         <TableContainer component={Paper}>
-          <Table>
+          <InputLabel>Mensajes recibidos:</InputLabel>
+          <Table>            
             <TableHead>
               <TableRow>
                 <TableCell>Nro.</TableCell>
