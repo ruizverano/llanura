@@ -30,14 +30,18 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
+
+                
 });
 
 Route::middleware('auth')->group(function () {
 
+    
     Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
+                ->name('register');            
     
     Route::post('register', [RegisteredUserController::class, 'store']);
+    
 
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
@@ -66,6 +70,6 @@ Route::middleware('auth')->group(function () {
     Route::post('comunicaciones', [ComunicacionesController::class, 'store'])
     ->middleware(['auth', 'verified'])->name('comunicaciones.store');
 
-    Route::get('get-comunicaciones', [ComunicacionesController::class, 'getComunicaciones']);
+    Route::post('get-comunicaciones', [ComunicacionesController::class, 'getComunicaciones']);
 
 });

@@ -16,15 +16,30 @@ export default function ListaComunicados(props){
   useEffect(() => {
     const fetchComunicaciones = async () => {
       try {
-        const response = await fetch (`/get-comunicaciones?usuario=${props.name}`);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        const response = await fetch (`/get-comunicaciones`,{
+          method:'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+          },
+          body: JSON.stringify({usuario: props.name}),
+        });
+        if(!response.ok){
+          throw new Error('Hubo un error');
+        }
         const data = await response.json();
         setComunicaciones(data);
       } catch (error) {
         console.error('Error fetching comunicaciones: ', error);
       }
     };
-    fetchComunicaciones();
-  },[]);
+
+    if(props.name){
+      fetchComunicaciones();
+    }    
+  },[props.name]);
 
     // const data = [
     //     { name: 'John Doe', age: 28, job: 'Software Engineer' },
@@ -36,11 +51,11 @@ export default function ListaComunicados(props){
         <div>
           <h1>Comunicados</h1>
           <ul>
-            {comunicaciones.map((comunicado)=>(
-              <li key = {comunicado.id}>
-                <h2>{comunicado.asunto}</h2>
-                <p>{comunicado.comunicado}</p>
-                <p><strong>Fecha: </strong> {comunicado.fecha}</p>
+            {comunicaciones.map((mensaje, index)=>(
+              <li key = {mensaje.index}>
+                <h2>{mensaje.asunto}</h2>
+                <p>{mensaje.comunicado}</p>
+                <p><strong>Fecha: </strong> {mensaje.fecha}</p>
               </li>
             ))}
           </ul>
