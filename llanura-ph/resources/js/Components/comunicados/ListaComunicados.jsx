@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+
 
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
@@ -22,7 +18,7 @@ export default function ListaComunicados(props){
           method:'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
+            //'X-CSRF-TOKEN': csrfToken,
           },
           body: JSON.stringify({usuario: props.name}),
         });
@@ -34,52 +30,35 @@ export default function ListaComunicados(props){
       } catch (error) {
         console.error('Error fetching comunicaciones: ', error);
       }
-    };
-
-    if(props.name){
+    };    
       fetchComunicaciones();
-    }    
-  },[props.name]);
+        
+  },[]);
 
-    // const data = [
-    //     { name: 'John Doe', age: 28, job: 'Software Engineer' },
-    //     { name: 'Jane Smith', age: 34, job: 'Product Manager' },
-    //     { name: 'Sam Johnson', age: 22, job: 'Designer' },
-    //   ];
     
-      return (
-        <div>
-          <h1>Comunicados</h1>
-          <ul>
-            {comunicaciones.map((mensaje, index)=>(
-              <li key = {mensaje.index}>
-                <h2>{mensaje.asunto}</h2>
-                <p>{mensaje.comunicado}</p>
-                <p><strong>Fecha: </strong> {mensaje.fecha}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-        // <TableContainer component={Paper}>
-        //   <Table>
-        //     <TableHead>
-        //       <TableRow>
-        //         <TableCell>Fecha</TableCell>
-        //         <TableCell>Asunto</TableCell>
-        //         <TableCell>Comunicado</TableCell>
-        //       </TableRow>
-        //     </TableHead>
-        //     <TableBody>
-        //       {data.map((row, index) => (
-        //         <TableRow key={index}>
-        //           <TableCell>{row.name}</TableCell>
-        //           <TableCell>{row.age}</TableCell>
-        //           <TableCell>{row.job}</TableCell>
-        //         </TableRow>
-        //       ))}
-        //     </TableBody>
-        //   </Table>
-        // </TableContainer>
+      return (        
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Nro.</TableCell>
+                <TableCell>Fecha</TableCell>
+                <TableCell>Asunto</TableCell>
+                <TableCell>Comunicado</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {comunicaciones.map((mensaje, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index+1}</TableCell>
+                  <TableCell>{mensaje.fecha}</TableCell>
+                  <TableCell>{mensaje.asunto}</TableCell>
+                  <TableCell>{mensaje.comunicado}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
     );
 }
 
