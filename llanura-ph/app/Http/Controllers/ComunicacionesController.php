@@ -14,7 +14,13 @@ class ComunicacionesController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Modulos/Comunicados');        
+        $usuario = Auth::user()->name;
+
+        $mensajes = $this->getComunicaciones($usuario);
+
+        return Inertia::render('Modulos/Comunicados', [
+            'mensajes' => $mensajes,
+        ]);
     }
 
 
@@ -36,10 +42,8 @@ class ComunicacionesController extends Controller
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
 
-    public function getComunicaciones(Request $request){
-        $destinatario = $request->input('usuario');
+    public function getComunicaciones(?string $destinatario = null){        
         $mensajes = Comunicaciones::where('destinatario', $destinatario)->get();
-
-        return response()->json($mensajes);
+        return $mensajes->toArray();        
     }
 }

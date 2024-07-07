@@ -3,25 +3,29 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
-import ListaComunicados from '@/Components/comunicados/ListaComunicados';
-import { Button } from '@mui/material';
 import PrimaryButton from '@/Components/PrimaryButton';
 
-export default function Comunicados ({ auth }) {
+import {
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+    InputLabel,
+} from '@mui/material';
 
-    const nro_rol = auth.user.rol_id;    
+
+export default function Comunicados({ auth, mensajes }) {
+
+    const nro_rol = auth.user.rol_id;
 
     const [interfazAdmin, setInterfazAdmin] = useState(false);
     const [interfazPortero, setInterfazPortero] = useState(false);
     const [interfazResidente, setInterfazResidente] = useState(false);
 
-    const [mostrarFormulario, setMostrarFormulario]= useState(false);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
     useEffect(() => {
         setInterfazAdmin(nro_rol === 1);
-        setInterfazPortero(nro_rol === 2); 
+        setInterfazPortero(nro_rol === 2);
         setInterfazResidente(nro_rol === 3);
-    }, []);
+    }, []);    
 
     return (
         <AuthenticatedLayout
@@ -32,27 +36,43 @@ export default function Comunicados ({ auth }) {
 
             <div className="py-12 fondoDashBoard">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">{auth.user.name} está logeado</div>
-                        <div className="flex justify-center">
-                            <Router>
-                                <Routes>                                    
-                                    <Route path="/comunicaciones" element={<ListaComunicados name = {auth.user.name}/>} />
-                                </Routes>
-                            </Router>                            
-                        </div>
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">                        
+
+                        <TableContainer component={Paper}>
+                            <InputLabel>Mensajes recibidos por {auth.user.name}</InputLabel>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Nro.</TableCell>
+                                        <TableCell>Fecha dd/mm/aaaa</TableCell>
+                                        <TableCell>Asunto</TableCell>
+                                        <TableCell>Comunicado</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {mensajes.map((mensaje, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell>{mensaje.fecha}</TableCell>
+                                            <TableCell>{mensaje.asunto}</TableCell>
+                                            <TableCell>{mensaje.comunicado}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
 
                         <PrimaryButton
-                            onClick = {() => setMostrarFormulario(!mostrarFormulario)}
+                            onClick={() => setMostrarFormulario(!mostrarFormulario)}
                             className="ms-4">
                             Nuevo mensaje
                         </PrimaryButton>
-                        
-                        { mostrarFormulario && (
+
+                        {mostrarFormulario && (
                             <div className="flex justify-center">
                                 <FormularioComunicados auth={auth} />
                             </div>
-                        )}                        
+                        )}
                     </div>
                 </div>
             </div>

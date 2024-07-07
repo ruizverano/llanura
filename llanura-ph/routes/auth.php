@@ -29,8 +29,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.reset');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.store');
-
+                ->name('password.store');    
                 
 });
 
@@ -65,11 +64,9 @@ Route::middleware('auth')->group(function () {
                 ->name('logout');
 
     Route::get('comunicaciones', [ComunicacionesController::class, 'create'])
-            ->middleware(['auth', 'verified'])->name('comunicaciones.create');
+             ->middleware(['auth', 'verified'])->name('comunicaciones.create');
 
     Route::post('comunicaciones', [ComunicacionesController::class, 'store'])
-    ->middleware(['auth', 'verified'])->name('comunicaciones.store');
-
-    Route::post('get-comunicaciones', [ComunicacionesController::class, 'getComunicaciones']);
+             ->middleware(['auth', 'verified'])->name('comunicaciones.store');    
 
 });
