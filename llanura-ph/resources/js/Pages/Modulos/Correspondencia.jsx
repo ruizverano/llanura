@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import FormularioCorrespondencia from '@/Components/correspondencia/FormularioCorrespondencia';
+import FormularioCorrespondencia from '@/Components/correspondencia/FormularioComunicado';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TablaCorrespondencia from '@/Components/correspondencia/TablaCorrespondencia';
 
 
 
 
-export default function Correspondencia({ auth, mensajes }) {
+export default function Correspondencia({ auth, paquetes }) {
 
     const nro_rol = auth.user.rol_id;
 
     const [mostrarTabla, setMostrarTabla] = useState(true);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-    const [valorBoton, setValorBoton] = useState('nuevo mensaje');
+    const [valorBoton, setValorBoton] = useState('nuevo paquete');
 
     const alternarVista = () => {
         setMostrarTabla(!mostrarTabla);
         setMostrarFormulario(!mostrarFormulario);        
-        !mostrarFormulario?setValorBoton('ver mensajes'):setValorBoton('nuevo mensaje');
+        !mostrarFormulario?setValorBoton('ver paquetes'):setValorBoton('nuevo paquete');
     }
 
     const [interfazAdmin, setInterfazAdmin] = useState(false);
@@ -47,7 +47,7 @@ export default function Correspondencia({ auth, mensajes }) {
 
                         {mostrarTabla && (
                             <TablaCorrespondencia
-                                mensajes={mensajes}
+                                paquetes={paquetes}
                                 usuario = {auth.user.name}
                             />
                         )}                        

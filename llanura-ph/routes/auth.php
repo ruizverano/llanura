@@ -63,10 +63,20 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 
+    /**Comunicaciones */
+
     Route::get('comunicaciones', [ComunicacionesController::class, 'create'])
              ->middleware(['auth', 'verified'])->name('comunicaciones.create');
 
     Route::post('comunicaciones', [ComunicacionesController::class, 'store'])
-             ->middleware(['auth', 'verified'])->name('comunicaciones.store');    
+             ->middleware(['auth', 'verified'])->name('comunicaciones.store');
+
+    /**Correspondencia */
+
+    Route::get('correspondencia', [CorrespondenciaController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('correspondencia.create');
+
+    Route::post('correspondencia', [CorrespondenciaController::class, 'store'])
+             ->middleware(['auth', 'verified'])->name('correspondencia.store');    
 
 });
