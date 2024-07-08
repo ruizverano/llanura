@@ -15,6 +15,7 @@ export default function FormularioComunicados(props){
         errors, 
         reset,         
     } = useForm({
+        origen:props.auth.user.name,
         destinatario: '',
         asunto: '',
         comunicado: ''
@@ -22,20 +23,21 @@ export default function FormularioComunicados(props){
 
     useEffect(() => {
         return () => {
-            reset('destinatario', 'asunto', 'comunicado');
+            reset('origen','destinatario', 'asunto', 'comunicado');            
         };
     }, []);
     
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('comunicaciones.store'));
-        alert("Mensaje enviado a "+data.destinatario);
-        reset('destinatario', 'asunto', 'comunicado');
+        post(route('comunicaciones.store'))
+        alert("Mensaje enviado a "+data.destinatario + " desde "+data.origen);
+        reset('origen','destinatario', 'asunto', 'comunicado');
     };
 
     return(
         <form onSubmit={submit}>
+            <input name='origen' type='hidden' value={data.origen}/>
             <div>
                 <InputLabel htmlFor="destinatario" value="Destinatario" />
                 <TextInput

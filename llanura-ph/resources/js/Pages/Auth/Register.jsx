@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import Select from '@/Components/Select';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Typography } from '@mui/material';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -37,8 +38,14 @@ export default function Register() {
     return (
         <GuestLayout>
             <Head title="Register" />
-
-            <form onSubmit={submit}>
+            <Typography 
+                variant="h6" 
+                component="div" 
+                style={{ padding: '16px', backgroundColor: '#f0f0f0', borderRadius: '8px' }}
+            >
+                Crear nuevo usuario
+            </Typography>
+            <form onSubmit={submit}>                
                 <div>
                     <InputLabel htmlFor="name" value="Nombres" />
 

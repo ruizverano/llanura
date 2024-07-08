@@ -14,6 +14,7 @@ class Comunicaciones extends Model
 
     protected $fillable = [
         'fecha',
+        'origen',
         'destinatario',
         'asunto',
         'comunicado'        

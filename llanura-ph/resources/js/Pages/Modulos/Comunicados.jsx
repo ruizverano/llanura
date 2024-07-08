@@ -4,23 +4,30 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
 import PrimaryButton from '@/Components/PrimaryButton';
+import TablaComunicados from '@/Components/comunicados/TablaComunicados';
 
-import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-    InputLabel,
-} from '@mui/material';
+
 
 
 export default function Comunicados({ auth, mensajes }) {
 
     const nro_rol = auth.user.rol_id;
 
+    const [mostrarTabla, setMostrarTabla] = useState(true);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
+    const [valorBoton, setValorBoton] = useState('nuevo mensaje');
+
+    const alternarVista = () => {
+        setMostrarTabla(!mostrarTabla);
+        setMostrarFormulario(!mostrarFormulario);        
+        !mostrarFormulario?setValorBoton('ver mensajes'):setValorBoton('nuevo mensaje');
+    }
+
     const [interfazAdmin, setInterfazAdmin] = useState(false);
     const [interfazPortero, setInterfazPortero] = useState(false);
     const [interfazResidente, setInterfazResidente] = useState(false);
-
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
-
+    
     useEffect(() => {
         setInterfazAdmin(nro_rol === 1);
         setInterfazPortero(nro_rol === 2);
@@ -38,42 +45,28 @@ export default function Comunicados({ auth, mensajes }) {
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">                        
 
-                        <TableContainer component={Paper}>
-                            <InputLabel>Mensajes recibidos por {auth.user.name}</InputLabel>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Nro.</TableCell>
-                                        <TableCell>Fecha dd/mm/aaaa</TableCell>
-                                        <TableCell>Asunto</TableCell>
-                                        <TableCell>Comunicado</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {mensajes.map((mensaje, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{mensaje.fecha}</TableCell>
-                                            <TableCell>{mensaje.asunto}</TableCell>
-                                            <TableCell>{mensaje.comunicado}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-
-                        <PrimaryButton
-                            onClick={() => setMostrarFormulario(!mostrarFormulario)}
-                            className="ms-4">
-                            Nuevo mensaje
-                        </PrimaryButton>
-
+                        {mostrarTabla && (
+                            <TablaComunicados
+                                mensajes={mensajes}
+                                usuario = {auth.user.name}
+                            />
+                        )}                        
+                        
                         {mostrarFormulario && (
                             <div className="flex justify-center">
-                                <FormularioComunicados auth={auth} />
+                                <FormularioComunicados 
+                                    auth={auth} 
+                                />
                             </div>
                         )}
-                    </div>
+
+                        <PrimaryButton
+                            onClick={alternarVista}
+                            className="ms-4"
+                        >
+                            {valorBoton}
+                        </PrimaryButton>
+                    </div>                    
                 </div>
             </div>
         </AuthenticatedLayout>

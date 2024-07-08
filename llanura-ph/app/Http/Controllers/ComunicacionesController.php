@@ -27,6 +27,7 @@ class ComunicacionesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'origen' => 'string',
             'destinatario' => 'required|exists:users,name',
             'asunto' => 'required|string|max:255',
             'comunicado' => 'required|string',
@@ -34,6 +35,7 @@ class ComunicacionesController extends Controller
 
         $comunicacion = Comunicaciones::create([
             'fecha' => now(),
+            'origen' => $request->origen,
             'destinatario' => $request->destinatario,
             'asunto' => $request->asunto,
             'comunicado' => $request->comunicado,
