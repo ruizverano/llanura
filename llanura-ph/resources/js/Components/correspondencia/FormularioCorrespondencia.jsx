@@ -32,7 +32,7 @@ export default function FormularioCorrespondencia(props){
     const submit = (e) => {
         e.preventDefault();
         post(route('comunicaciones.store'))
-        alert("Correspondencia registrada "+ por +data.portero);
+        alert("Correspondencia registrada por" + data.portero);
         reset('portero','descripcion','origen','destino', 'entregado');
     };
 
@@ -41,7 +41,7 @@ export default function FormularioCorrespondencia(props){
             <input name='origen' type='hidden' value={data.origen}/>
             <div>
                 <InputLabel htmlFor="descripcion" value="Descripcion" />
-                <TextInput
+                <textarea
                     id="descripcion"
                     name="descripcion"
                     value={data.descripcion}
@@ -50,12 +50,13 @@ export default function FormularioCorrespondencia(props){
                     isFocused={true}
                     onChange={(e) => setData('descripcion', e.target.value)}
                     required
+                    rows="4"
                 />
                 <InputError message={errors.descripcion} className="mt-2" />
             </div>
 
             <div className="mt-4">
-                <InputLabel htmlFor="origen" value="origen" />
+                <InputLabel htmlFor="origen" value="Origen" />
                 <TextInput
                     id="origen"
                     name="origen"
@@ -69,31 +70,29 @@ export default function FormularioCorrespondencia(props){
             </div>
 
             <div className="mt-4">
-                <InputLabel htmlFor="destino" value="Mensaje" />
-                <textarea
+                <InputLabel htmlFor="destino" value="Destino" />
+                <TextInput
                     id="destino"
                     name="destino"
                     value={data.destino}
                     className="mt-1 block w-full"
                     autoComplete="destino"
                     onChange={(e) => setData('destino', e.target.value)}
-                    required
-                    rows="4"
+                    required                    
                 />
                 <InputError message={errors.destino} className="mt-2" />
             </div>
 
             <div className="mt-4">
-                <InputLabel htmlFor="entregado" value="Mensaje" />
-                <textarea
+                <InputLabel htmlFor="entregado" value="Entregado?" />
+                <TextInput
                     id="entregado"
                     name="entregado"
                     value={data.entregado}
                     className="mt-1 block w-full"
                     autoComplete="entregado"
                     onChange={(e) => setData('entregado', e.target.value)}
-                    required
-                    rows="4"
+                    required                    
                 />
                 <InputError message={errors.entregado} className="mt-2" />
             </div>

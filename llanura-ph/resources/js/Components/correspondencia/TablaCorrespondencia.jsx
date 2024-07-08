@@ -29,15 +29,15 @@ export default function PaquetesRecibidos({ usuario, paquetes }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {paquetes.map((mensaje, index) => (
+                    {paquetes.map((paquete, index) => (
                         <TableRow key={index}>
                             <TableCell>{index + 1}</TableCell>
-                            <TableCell>{mensaje.fecha}</TableCell>
-                            <TableCell>{mensaje.portero}</TableCell>
-                            <TableCell>{mensaje.descripcion}</TableCell>
-                            <TableCell>{mensaje.origen}</TableCell>
-                            <TableCell>{mensaje.destino}</TableCell>
-                            <TableCell>{mensaje.entregado}</TableCell>
+                            <TableCell>{paquete.fecha}</TableCell>
+                            <TableCell>{paquete.portero}</TableCell>
+                            <TableCell>{paquete.descripcion}</TableCell>
+                            <TableCell>{paquete.origen}</TableCell>
+                            <TableCell>{paquete.destino}</TableCell>
+                            <TableCell>{paquete.entregado}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

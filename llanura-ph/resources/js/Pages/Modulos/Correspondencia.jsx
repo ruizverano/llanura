@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import FormularioCorrespondencia from '@/Components/correspondencia/FormularioComunicado';
+import FormularioCorrespondencia from '@/Components/correspondencia/FormularioCorrespondencia';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TablaCorrespondencia from '@/Components/correspondencia/TablaCorrespondencia';
 

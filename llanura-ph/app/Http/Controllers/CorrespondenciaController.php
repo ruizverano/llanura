@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Inertia\Inertia;
 use App\Models\Correspondencia;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 
 class CorrespondenciaController extends Controller
 {
@@ -14,7 +17,7 @@ class CorrespondenciaController extends Controller
 
         $paquetes = $this->getCorrespondencia($usuario);
 
-        return Intertia::render ('Modulos/Correspondencia', [
+        return Inertia::render ('Modulos/Correspondencia', [
             'prueba'=> $usuario,
             'paquetes' => $paquetes
         ]);
@@ -43,7 +46,7 @@ class CorrespondenciaController extends Controller
     }
 
     public function getCorrespondencia(?string $destinatario = null){
-        $paquetes = Correspondencia::where('destinatario', $destinatario)->get();
-        return $paquetes-toArray();
+        $paquetes = Correspondencia::where('destino', $destinatario)->get();
+        return $paquetes->toArray();
     }
 }
