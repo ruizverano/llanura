@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import FormularioCorrespondencia from '@/Components/correspondencia/FormularioCorrespondencia';
 import PrimaryButton from '@/Components/PrimaryButton';
-import TablaCorrespondencia from '@/Components/correspondencia/TablaCorrespondencia';
-
-
+import TablaComunicados from '@/Components/comunicados/TablaComunicados';
+import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
 
 
 export default function Correspondencia({ auth, mensajes }) {
@@ -20,19 +17,19 @@ export default function Correspondencia({ auth, mensajes }) {
 
     const alternarVista = () => {
         setMostrarTabla(!mostrarTabla);
-        setMostrarFormulario(!mostrarFormulario);        
-        !mostrarFormulario?setValorBoton('ver mensajes'):setValorBoton('nuevo mensaje');
+        setMostrarFormulario(!mostrarFormulario);
+        !mostrarFormulario ? setValorBoton('ver mensajes') : setValorBoton('nuevo mensaje');
     }
 
     const [interfazAdmin, setInterfazAdmin] = useState(false);
     const [interfazPortero, setInterfazPortero] = useState(false);
     const [interfazResidente, setInterfazResidente] = useState(false);
-    
+
     useEffect(() => {
         setInterfazAdmin(nro_rol === 1);
         setInterfazPortero(nro_rol === 2);
         setInterfazResidente(nro_rol === 3);
-    }, []);    
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -43,19 +40,19 @@ export default function Correspondencia({ auth, mensajes }) {
 
             <div className="py-12 fondoDashBoard">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">                        
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                         {mostrarTabla && (
-                            <TablaCorrespondencia
+                            <TablaComunicados
                                 mensajes={mensajes}
-                                usuario = {auth.user.name}
+                                usuario={auth.user.name}
                             />
-                        )}                        
-                        
+                        )}
+
                         {mostrarFormulario && (
                             <div className="flex justify-center">
-                                <FormularioCorrespondencia 
-                                    auth={auth} 
+                                <FormularioComunicados
+                                    auth={auth}
                                 />
                             </div>
                         )}
@@ -66,7 +63,7 @@ export default function Correspondencia({ auth, mensajes }) {
                         >
                             {valorBoton}
                         </PrimaryButton>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

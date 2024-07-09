@@ -10,7 +10,7 @@ import {
     Typography
 } from '@mui/material';
 
-export default function MensajesRecibidos({ usuario, mensajes }) {
+export default function TablaComunicados({ usuario, mensajes }) {
     return (
         <TableContainer component={Paper}>
             <Typography variant="h6" component="div" style={{ padding: '16px' }}>

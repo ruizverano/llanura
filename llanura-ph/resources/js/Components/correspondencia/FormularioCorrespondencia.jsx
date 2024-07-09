@@ -31,14 +31,14 @@ export default function FormularioCorrespondencia(props){
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('comunicaciones.store'))
+        post(route('correspondencia.store'))
         alert("Correspondencia registrada por" + data.portero);
         reset('portero','descripcion','origen','destino', 'entregado');
     };
 
     return(
         <form onSubmit={submit}>
-            <input name='origen' type='hidden' value={data.origen}/>
+            <input name='portero' type='hidden' value={data.portero}/>
             <div>
                 <InputLabel htmlFor="descripcion" value="Descripcion" />
                 <textarea
