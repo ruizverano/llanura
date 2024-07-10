@@ -9,7 +9,7 @@ import TablaCorrespondencia from '@/Components/correspondencia/TablaCorresponden
 
 
 
-export default function Correspondencia({ auth, paquetes }) {
+export default function Correspondencia({ auth, paquetes, usuarios }) {
 
     const nro_rol = auth.user.rol_id;
 
@@ -28,7 +28,7 @@ export default function Correspondencia({ auth, paquetes }) {
     const [interfazPortero, setInterfazPortero] = useState(false);
     const [interfazResidente, setInterfazResidente] = useState(false);
     
-    useEffect(() => {
+    useEffect(() => {              
         setInterfazAdmin(nro_rol === 1);
         setInterfazPortero(nro_rol === 2);
         setInterfazResidente(nro_rol === 3);
@@ -55,7 +55,8 @@ export default function Correspondencia({ auth, paquetes }) {
                         {mostrarFormulario && (
                             <div className="flex justify-center">
                                 <FormularioCorrespondencia 
-                                    auth={auth} 
+                                    auth={auth}
+                                    usuarios = {usuarios}
                                 />
                             </div>
                         )}

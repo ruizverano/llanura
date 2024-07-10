@@ -18,8 +18,13 @@ class ComunicacionesController extends Controller
 
         $mensajes = $this->getComunicaciones($usuario);
 
+        $userModel = new User();
+
+        $usuarios = $userModel->getAllUsuarios();
+
         return Inertia::render('Modulos/Comunicados', [
             'mensajes' => $mensajes,
+            'usuarios' => $usuarios,
         ]);
     }
 

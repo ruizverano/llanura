@@ -4,6 +4,10 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
+import {
+    Select,
+    MenuItem
+} from '@mui/material';
 
 export default function FormularioComunicados(props){
 
@@ -19,12 +23,15 @@ export default function FormularioComunicados(props){
         destinatario: '',
         asunto: '',
         comunicado: ''
-    });    
+    });
+
+    const [listaUsuarios, setListaUsuarios] = useState([]);
 
     useEffect(() => {
+        setListaUsuarios(props.usuarios);
         return () => {
             reset('origen','destinatario', 'asunto', 'comunicado');            
-        };
+        };        
     }, []);
     
 
@@ -38,18 +45,25 @@ export default function FormularioComunicados(props){
     return(
         <form onSubmit={submit}>
             <input name='origen' type='hidden' value={data.origen}/>
-            <div>
+
+            <div className="mt-4">                    
                 <InputLabel htmlFor="destinatario" value="Destinatario" />
-                <TextInput
+
+                <Select
                     id="destinatario"
                     name="destinatario"
                     value={data.destinatario}
                     className="mt-1 block w-full"
-                    autoComplete="destinatario"
-                    isFocused={true}
                     onChange={(e) => setData('destinatario', e.target.value)}
                     required
-                />
+                >
+                    {
+                        listaUsuarios.map((usuario, index)=>(
+                            <MenuItem key={index} value={usuario}>{usuario}</MenuItem>
+                        ))
+                    }
+                </Select>
+
                 <InputError message={errors.destinatario} className="mt-2" />
             </div>
 
@@ -91,5 +105,3 @@ export default function FormularioComunicados(props){
         </form>
     );
 }
-
-
