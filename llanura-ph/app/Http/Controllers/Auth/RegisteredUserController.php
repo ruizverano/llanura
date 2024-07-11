@@ -59,8 +59,4 @@ class RegisteredUserController extends Controller
         //return redirect(route('dashboard', absolute: false));
     }
 
-    public function getAllUsuarios(){
-        $usuarios = User::pluck('usuario');
-        return $usuarios->toArray();
-    }
 }

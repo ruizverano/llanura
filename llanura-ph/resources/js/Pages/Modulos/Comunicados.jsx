@@ -6,7 +6,7 @@ import TablaComunicados from '@/Components/comunicados/TablaComunicados';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
 
 
-export default function Correspondencia({ auth, mensajes }) {
+export default function Correspondencia({ auth, mensajes, usuarios }) {
 
     const nro_rol = auth.user.rol_id;
 
@@ -53,6 +53,7 @@ export default function Correspondencia({ auth, mensajes }) {
                             <div className="flex justify-center">
                                 <FormularioComunicados
                                     auth={auth}
+                                    usuarios = {usuarios}
                                 />
                             </div>
                         )}

@@ -4,6 +4,10 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import {
+    Select,
+    MenuItem
+} from '@mui/material';
 
 export default function FormularioCorrespondencia(props){
 
@@ -20,9 +24,12 @@ export default function FormularioCorrespondencia(props){
         origen: '',
         destino: '',
         entregado: '',        
-    });    
+    });
+
+    const [listaUsuarios, setListaUsuarios] = useState([]);
 
     useEffect(() => {
+        setListaUsuarios(props.usuarios);
         return () => {
             reset('portero','descripcion','origen','destino', 'entregado');            
         };
@@ -32,7 +39,7 @@ export default function FormularioCorrespondencia(props){
     const submit = (e) => {
         e.preventDefault();
         post(route('correspondencia.store'))
-        alert("Correspondencia registrada por" + data.portero);
+        alert("Correspondencia registrada por " + data.portero);
         reset('portero','descripcion','origen','destino', 'entregado');
     };
 
@@ -69,31 +76,42 @@ export default function FormularioCorrespondencia(props){
                 <InputError message={errors.origen} className="mt-2" />
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4">                    
                 <InputLabel htmlFor="destino" value="Destino" />
-                <TextInput
+
+                <Select
                     id="destino"
                     name="destino"
                     value={data.destino}
                     className="mt-1 block w-full"
-                    autoComplete="destino"
                     onChange={(e) => setData('destino', e.target.value)}
-                    required                    
-                />
+                    required
+                >
+                    {
+                        listaUsuarios.map((usuario, index)=>(
+                            <MenuItem key={index} value={usuario}>{usuario}</MenuItem>
+                        ))
+                    }
+                </Select>
+
                 <InputError message={errors.destino} className="mt-2" />
             </div>
 
-            <div className="mt-4">
-                <InputLabel htmlFor="entregado" value="Entregado?" />
-                <TextInput
+            <div className="mt-4">                    
+                <InputLabel htmlFor="entregado" value="Entregado" />
+
+                <Select
                     id="entregado"
                     name="entregado"
                     value={data.entregado}
                     className="mt-1 block w-full"
-                    autoComplete="entregado"
                     onChange={(e) => setData('entregado', e.target.value)}
-                    required                    
-                />
+                    required
+                >                    
+                    <MenuItem value={1}>SI</MenuItem>
+                    <MenuItem value={0}>NO</MenuItem>                    
+                </Select>
+
                 <InputError message={errors.entregado} className="mt-2" />
             </div>
 

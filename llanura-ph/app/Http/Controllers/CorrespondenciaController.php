@@ -17,9 +17,13 @@ class CorrespondenciaController extends Controller
 
         $paquetes = Correspondencia::getCorrespondenciaPorUsuario($usuario);
 
-        return Inertia::render ('Modulos/Correspondencia', [
-            'prueba'=> $usuario,
-            'paquetes' => $paquetes
+        $userModel = new User();
+
+        $usuarios = $userModel->getAllUsuarios();
+
+        return Inertia::render ('Modulos/Correspondencia', [            
+            'paquetes' => $paquetes,
+            'usuarios' => $usuarios,
         ]);
     }
 
@@ -30,7 +34,7 @@ class CorrespondenciaController extends Controller
             'descripcion' => 'required|string|max:255',
             'origen' => 'required|string',
             'destino' =>'required|string',
-            'entregado' => 'required|string'
+            'entregado' => 'required'
         ]);
 
         $correspondencia = Correspondencia::create([
