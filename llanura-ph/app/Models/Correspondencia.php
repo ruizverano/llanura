@@ -17,4 +17,15 @@ class Correspondencia extends Model
         'destino',
         'entregado'
     ];
+
+
+    public function getCorrespondenciaPorUsuario(?string $destinatario = null){
+        $paquetes = Correspondencia::where('destino', $destinatario)->get();
+        return $paquetes->toArray();
+    }
+
+    public function getCorrespondencia(){
+        $paquetes = Correspondencia::where('destino', $destinatario)->get();
+        return $paquetes->toArray();
+    }
 }

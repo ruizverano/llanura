@@ -15,7 +15,7 @@ class CorrespondenciaController extends Controller
     public function create(): Response {
         $usuario = Auth::user()->name;
 
-        $paquetes = $this->getCorrespondencia($usuario);
+        $paquetes = Correspondencia::getCorrespondenciaPorUsuario($usuario);
 
         return Inertia::render ('Modulos/Correspondencia', [
             'prueba'=> $usuario,
@@ -45,8 +45,4 @@ class CorrespondenciaController extends Controller
         return redirect()->back()->with('success', 'Registrado correctamente');
     }
 
-    public function getCorrespondencia(?string $destinatario = null){
-        $paquetes = Correspondencia::where('destino', $destinatario)->get();
-        return $paquetes->toArray();
-    }
 }
