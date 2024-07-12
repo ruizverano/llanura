@@ -9,7 +9,7 @@ import TablaCorrespondencia from '@/Components/correspondencia/TablaCorresponden
 
 
 
-export default function Correspondencia({ auth, paquetes, usuarios }) {
+export default function Correspondencia({ auth, paquetes, usuarios, gestion }) {
 
     const nro_rol = auth.user.rol_id;
 
@@ -20,19 +20,19 @@ export default function Correspondencia({ auth, paquetes, usuarios }) {
 
     const alternarVista = () => {
         setMostrarTabla(!mostrarTabla);
-        setMostrarFormulario(!mostrarFormulario);        
-        !mostrarFormulario?setValorBoton('ver paquetes'):setValorBoton('nuevo paquete');
+        setMostrarFormulario(!mostrarFormulario);
+        !mostrarFormulario ? setValorBoton('ver paquetes') : setValorBoton('nuevo paquete');
     }
 
     const [interfazAdmin, setInterfazAdmin] = useState(false);
     const [interfazPortero, setInterfazPortero] = useState(false);
     const [interfazResidente, setInterfazResidente] = useState(false);
-    
-    useEffect(() => {              
+
+    useEffect(() => {
         setInterfazAdmin(nro_rol === 1);
         setInterfazPortero(nro_rol === 2);
         setInterfazResidente(nro_rol === 3);
-    }, []);    
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -42,32 +42,35 @@ export default function Correspondencia({ auth, paquetes, usuarios }) {
             <Head title="Comunicaciones" />
 
             <div className="py-12 fondoDashBoard">
-                <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">                        
+                <div className="max-w-3xl mx-auto sm:px-12 lg:px-12">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                         {mostrarTabla && (
                             <TablaCorrespondencia
+                                gestion={gestion}
                                 paquetes={paquetes}
-                                usuario = {auth.user.name}
+                                usuario={auth.user.name}
                             />
-                        )}                        
-                        
+                        )}
+
                         {mostrarFormulario && (
                             <div className="flex justify-center">
-                                <FormularioCorrespondencia 
+                                <FormularioCorrespondencia
                                     auth={auth}
-                                    usuarios = {usuarios}
+                                    usuarios={usuarios}
                                 />
                             </div>
                         )}
 
-                        <PrimaryButton
-                            onClick={alternarVista}
-                            className="ms-4"
-                        >
-                            {valorBoton}
-                        </PrimaryButton>
-                    </div>                    
+                        {!gestion &&
+                            <PrimaryButton
+                                onClick={alternarVista}
+                                className="ms-4"
+                            >
+                                {valorBoton}
+                            </PrimaryButton>
+                        }
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

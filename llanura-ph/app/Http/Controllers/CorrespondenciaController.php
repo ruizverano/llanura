@@ -12,10 +12,10 @@ use Illuminate\Auth\Events\Registered;
 
 class CorrespondenciaController extends Controller
 {
-    public function create(): Response {
+    public function gestion(): Response {
         $usuario = Auth::user()->name;
-
-        $paquetes = Correspondencia::getCorrespondenciaPorUsuario($usuario);
+    
+        $paquetes = Correspondencia::getCorrespondencia();
 
         $userModel = new User();
 
@@ -24,6 +24,23 @@ class CorrespondenciaController extends Controller
         return Inertia::render ('Modulos/Correspondencia', [            
             'paquetes' => $paquetes,
             'usuarios' => $usuarios,
+            'gestion' => true,
+        ]);
+    }
+    
+    public function create(): Response {
+        $usuario = Auth::user()->name;
+    
+        $paquetes = Correspondencia::getCorrespondencia();
+
+        $userModel = new User();
+
+        $usuarios = $userModel->getAllUsuarios();
+
+        return Inertia::render ('Modulos/Correspondencia', [            
+            'paquetes' => $paquetes,
+            'usuarios' => $usuarios,
+            'gestion' => false,
         ]);
     }
 
@@ -47,6 +64,12 @@ class CorrespondenciaController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Registrado correctamente');
+    }
+
+    public function entregar (Request $request){
+        $correspondencia = Correspondencia::find($request->input('id'));        
+        $correspondencia->entregado = 1;
+        $correspondencia->save();            
     }
 
 }

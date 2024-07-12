@@ -77,7 +77,13 @@ Route::middleware('auth')->group(function () {
     Route::get('correspondencia', [CorrespondenciaController::class, 'create'])
     ->middleware(['auth', 'verified'])->name('correspondencia.create');
 
+    Route::get('gestion_correspondencia', [CorrespondenciaController::class, 'gestion'])
+    ->middleware(['auth', 'verified'])->name('correspondencia.gestion');
+
     Route::post('correspondencia', [CorrespondenciaController::class, 'store'])
              ->middleware(['auth', 'verified'])->name('correspondencia.store');    
+
+    Route::post('entregar', [CorrespondenciaController::class, 'entregar'])
+    ->middleware(['auth', 'verified'])->name('entregar');
 
 });

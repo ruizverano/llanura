@@ -2,12 +2,11 @@ import React from 'react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import BotonEnlace from '../BotonEnlace';
 
-const AdminDashboard = (props) => {
-    
+const AdminDashboard = (props) => {    
     
     return (
         <div>
-            <h1>¿Que desea hacer?</h1>
+            <h1>¿Bienvenido señor administrador, que desea hacer?</h1>
 
             <div className="flex items-center justify-center mt-4">
                 <BotonEnlace 
@@ -23,11 +22,11 @@ const AdminDashboard = (props) => {
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
                     method="get"
-                    //href={route('#')} 
+                    href={route('correspondencia.gestion')}
                     as="button"
                     texto ={"Gestión de Correspondencia"}
                 />
-            </div>            
+            </div>        
         </div>
     );
 }

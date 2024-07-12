@@ -19,13 +19,13 @@ class Correspondencia extends Model
     ];
 
 
-    public function getCorrespondenciaPorUsuario(?string $destinatario = null){
+    public static function getCorrespondenciaPorUsuario(?string $destinatario = null){
         $paquetes = Correspondencia::where('destino', $destinatario)->get();
         return $paquetes->toArray();
     }
 
-    public function getCorrespondencia(){
-        $paquetes = Correspondencia::where('destino', $destinatario)->get();
+    public static function getCorrespondencia(){
+        $paquetes = Correspondencia::all();
         return $paquetes->toArray();
     }
 }

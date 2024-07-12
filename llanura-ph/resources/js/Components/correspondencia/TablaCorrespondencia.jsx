@@ -7,22 +7,21 @@ import {
     TableRow,
     TableCell,
     Paper,
-    Typography
+    Typography,
+    Grid
 } from '@mui/material';
-import PrimaryButton from '../PrimaryButton';
+import BotonEnlace from '../BotonEnlace';
+import DangerButton from '../DangerButton';
 
-export default function PaquetesRecibidos({ usuario, paquetes }) {
-    const [mostrarGestionar, setMostrarGestionar] = useState(false);
+export default function PaquetesRecibidos(props) {
 
-    const toggleMostrarGestionar = () => {
-        setMostrarGestionar(!mostrarGestionar);
-    };
+    const { usuario, paquetes, gestion } = props;    
 
     return (
         <div>
             <TableContainer component={Paper}>
                 <Typography variant="h6" component="div" style={{ padding: '16px' }}>
-                    Paquetes recibidos por {usuario}
+                    {gestion ? `Paquetes recibidos, puede gestionar la entrega con el respectivo Botón` : `Paquetes recibidos por ${usuario}`}
                 </Typography>
                 <Table>
                     <TableHead>
@@ -34,13 +33,13 @@ export default function PaquetesRecibidos({ usuario, paquetes }) {
                             <TableCell><b>Origen</b></TableCell>
                             <TableCell><b>Destino</b></TableCell>
                             <TableCell><b>¿Entregado?</b></TableCell>
-                            {mostrarGestionar && (
+                            {gestion && (
                                 <TableCell><b>Gestionar</b></TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paquetes.map((paquete, index) => (
+                        {paquetes.filter(paquete => gestion || paquete.destino === usuario).map((paquete, index) => (
                             <TableRow key={index}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{paquete.fecha}</TableCell>
@@ -49,14 +48,17 @@ export default function PaquetesRecibidos({ usuario, paquetes }) {
                                 <TableCell>{paquete.origen}</TableCell>
                                 <TableCell>{paquete.destino}</TableCell>
                                 <TableCell>{paquete.entregado === 1 ? 'SI' : 'NO'}</TableCell>
-                                {mostrarGestionar && (
+                                {gestion && (
                                     <TableCell>
-                                        <PrimaryButton
-                                            disabled={paquete.entregado === 1}
-                                            className="ms-4"
-                                        >
-                                            Entregar
-                                        </PrimaryButton>
+                                        {paquete.entregado === 0 && (
+                                            <BotonEnlace 
+                                                tipo={"boton-enlace"} 
+                                                method="post"
+                                                href={route('entregar',[paquete])} 
+                                                as="button"
+                                                texto ={"Entregar"}
+                                            />
+                                        )}                                        
                                     </TableCell>
                                 )}
                             </TableRow>
@@ -64,9 +66,6 @@ export default function PaquetesRecibidos({ usuario, paquetes }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <PrimaryButton onClick={toggleMostrarGestionar} className="mt-4">
-                {mostrarGestionar ? 'Ocultar Gestionar' : 'Mostrar Gestionar'}
-            </PrimaryButton>
         </div>
     );
 }
