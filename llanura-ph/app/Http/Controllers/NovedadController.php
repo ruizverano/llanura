@@ -16,27 +16,29 @@ class NovedadController extends Controller
     public function create(): Response {
         $usuario = Auth::user()->name;
     
-        $novedades = Correspondencia::getCorrespondencia();
+        //$novedades = Correspondencia::getCorrespondencia();
 
-        $userModel = new User();
+        //$userModel = new User();
 
-        $usuarios = $userModel->getAllUsuarios();
+        //$usuarios = $userModel->getAllUsuarios();
 
         return Inertia::render ('Modulos/Novedad');
     }
 
     public function store(Request $request){
 
-        $request->validate([            
-            'origen' => 'required|string',
+        $usuario = Auth::user()->name;
+    
+
+        $request->validate([                        
             'novedad' =>'required|string',            
         ]);
 
-        $correspondencia = Correspondencia::create([            
-            'origen'=> $request->origen,
+        $correspondencia = Novedad::create([            
+            'origen'=> $usuario,
             'novedad'=> $request->novedad,            
         ]);
 
         return redirect()->back()->with('success', 'Registrado correctamente');
-    }    
+    }
 }

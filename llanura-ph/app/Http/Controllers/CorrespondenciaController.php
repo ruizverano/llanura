@@ -53,7 +53,7 @@ class CorrespondenciaController extends Controller
             'destino' =>'required|string',
             'entregado' => 'required'
         ]);
-
+        
         $correspondencia = Correspondencia::create([
             'fecha' => now(),
             'portero' => $request->portero,

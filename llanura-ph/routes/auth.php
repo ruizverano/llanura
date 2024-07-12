@@ -9,8 +9,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\ComunicacionesController;
-use App\Http\Controllers\CorrespondenciaController;
+use App\Http\Controllers\NovedadController;
+use App\Http\Controllers\RegistroController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {       
@@ -85,5 +85,21 @@ Route::middleware('auth')->group(function () {
 
     Route::post('entregar', [CorrespondenciaController::class, 'entregar'])
     ->middleware(['auth', 'verified'])->name('entregar');
+
+    /**Novedades */
+
+    Route::get('novedades', [NovedadController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('novedad.create');
+
+    Route::post('novedades', [NovedadController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('novedad.store');
+
+    /**Registros */
+
+    Route::get('registro', [RegistroController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('registro.create');
+
+    Route::post('registto', [RegistroController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('registro.store');
 
 });

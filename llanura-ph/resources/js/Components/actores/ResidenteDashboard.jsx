@@ -1,5 +1,5 @@
-// resources/js/SuperAdminDashboard.jsx
 import React from 'react';
+import BotonEnlace from '../BotonEnlace';
 
 const ResidenteDashboard = (props) => {
     return (
@@ -10,21 +10,11 @@ const ResidenteDashboard = (props) => {
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
                     method="get" 
-                    href={route('register')} 
+                    href={route('novedad.create')} 
                     as="button"
-                    texto ={"Gestión de Usuarios"}
+                    texto ={"Registrar novedades"}
                 />
-            </div>
-
-            <div className="flex items-center justify-center mt-4">
-                <BotonEnlace 
-                    tipo={"boton-enlace"} 
-                    method="get"
-                    //href={route('#')} 
-                    as="button"
-                    texto ={"Gestión de Correspondencia"}
-                />
-            </div>            
+            </div>                     
         </div>
     );
 }

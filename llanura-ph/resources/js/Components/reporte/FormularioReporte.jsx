@@ -4,48 +4,48 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function FormularioNovedad(auth){
+export default function FormularioRegistro(auth){
 
     const { 
-        data,
-        setData,
-        post,
-        processing,
-        errors,
-        reset,
-    } = useForm({
-        novedad: '',
-    });
+        data, 
+        setData, 
+        post, 
+        processing, 
+        errors, 
+        reset,         
+    } = useForm({                
+        registro: '',        
+    });  
 
     const [nombreUsuario, setNombreUsuario] = useState('');
 
     useEffect(()=>{
-        setNombreUsuario(auth.auth.user.name);
+        setNombreUsuario(auth.auth.user.name);        
     },[]);
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('novedad.store'));
-        alert("Novedad registrada por " + nombreUsuario );
-        reset('novedad');
+        post(route('registro.store'));
+        alert("Reporte registrado por " + nombreUsuario );
+        reset('registro');
     };
 
     return(
         <form onSubmit={submit}>            
             <div>
-                <InputLabel htmlFor="novedad" value="Novedad" />
+                <InputLabel htmlFor="registro" value="Reporte" />
                 <textarea
-                    id="novedad"
-                    name="novedad"
-                    value={data.novedad}
+                    id="registro"
+                    name="registro"
+                    value={data.registro}
                     className="mt-1 block w-full"
-                    autoComplete="novedad"
+                    autoComplete="registro"
                     isFocused={true}
-                    onChange={(e) => setData('novedad', e.target.value)}
+                    onChange={(e) => setData('registro', e.target.value)}
                     required
                     rows="4"
                 />
-                <InputError message={errors.novedad} className="mt-2" />
+                <InputError message={errors.registro} className="mt-2" />
             </div>
 
             <div className="flex items-center justify-end mt-4">

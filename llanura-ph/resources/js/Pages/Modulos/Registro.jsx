@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import FormularioNovedad from '@/Components/novedades/FormularioNovedad';
+import FormularioRegistro from '@/Components/reporte/FormularioReporte';
 
 
-export default function Novedad({ auth }) {
+export default function Registro({ auth }) {
 
     const nro_rol = auth.user.rol_id;
 
@@ -41,7 +41,7 @@ export default function Novedad({ auth }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                         <div className="flex justify-center">
-                            <FormularioNovedad
+                            <FormularioRegistro
                                 auth={auth}
                             />
                         </div>

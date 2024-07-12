@@ -1,5 +1,4 @@
 import React from 'react';
-import PrimaryButton from '@/Components/PrimaryButton';
 import BotonEnlace from '../BotonEnlace';
 
 const AdminDashboard = (props) => {    

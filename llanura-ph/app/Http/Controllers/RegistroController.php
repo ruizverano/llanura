@@ -4,62 +4,39 @@ namespace App\Http\Controllers;
 
 use App\Models\Registro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Response;
+use Inertia\Inertia;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 
 class RegistroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function create(): Response {
+        $usuario = Auth::user()->name;
+    
+        //$registros = Correspondencia::getCorrespondencia();
+
+        //$userModel = new User();
+
+        //$usuarios = $userModel->getAllUsuarios();
+
+        return Inertia::render ('Modulos/Registro');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    public function store(Request $request){
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $usuario = Auth::user()->name;
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Registro $registro)
-    {
-        //
-    }
+        $request->validate([                        
+            'registro' =>'required|string',            
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Registro $registro)
-    {
-        //
-    }
+        $correspondencia = Registro::create([            
+            'origen'=> $usuario,
+            'registro'=> $request->registro,            
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Registro $registro)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Registro $registro)
-    {
-        //
+        return redirect()->back()->with('success', 'Registrado correctamente');
     }
 }
