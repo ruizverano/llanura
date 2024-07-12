@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TablaComunicados from '@/Components/comunicados/TablaComunicados';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
 
 
-export default function Comunicados({ auth, mensajes, usuarios }) {
+export default function Novedad({ auth }) {
 
     const nro_rol = auth.user.rol_id;
 
@@ -42,28 +40,13 @@ export default function Comunicados({ auth, mensajes, usuarios }) {
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-12">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-                        {mostrarTabla && (
-                            <TablaComunicados
-                                mensajes={mensajes}
-                                usuario={auth.user.name}
+                        <div className="flex justify-center">
+                            <FormularioComunicados
+                                auth={auth}
+                                usuarios={usuarios}
                             />
-                        )}
+                        </div>
 
-                        {mostrarFormulario && (
-                            <div className="flex justify-center">
-                                <FormularioComunicados
-                                    auth={auth}
-                                    usuarios = {usuarios}
-                                />
-                            </div>
-                        )}
-
-                        <PrimaryButton
-                            onClick={alternarVista}
-                            className="ms-4"
-                        >
-                            {valorBoton}
-                        </PrimaryButton>
                     </div>
                 </div>
             </div>
