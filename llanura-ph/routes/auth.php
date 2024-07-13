@@ -11,6 +11,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\NovedadController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\ComunicacionesController;
+use App\Http\Controllers\CorrespondenciaController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {       
@@ -38,7 +41,7 @@ Route::middleware('auth')->group(function () {
 
     
     Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');            
+                ->name('register');
     
     Route::post('register', [RegisteredUserController::class, 'store']);
     
@@ -99,7 +102,12 @@ Route::middleware('auth')->group(function () {
     Route::get('registro', [RegistroController::class, 'create'])
     ->middleware(['auth', 'verified'])->name('registro.create');
 
-    Route::post('registto', [RegistroController::class, 'store'])
+    Route::post('registro', [RegistroController::class, 'store'])
     ->middleware(['auth', 'verified'])->name('registro.store');
+
+    /**Usuarios */
+
+    Route::get('usuarios', [SuperAdminController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('usuarios.index');
 
 });

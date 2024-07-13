@@ -11,7 +11,8 @@ const AdminDashboard = (props) => {
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
                     method="get" 
-                    href={route('register')} 
+                    //href={route('register')} 
+                    href={route('usuarios.index')} 
                     as="button"
                     texto ={"Gestión de Usuarios"}
                 />
