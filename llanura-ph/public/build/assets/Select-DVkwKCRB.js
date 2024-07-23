@@ -1,0 +1,1 @@
+import{j as r}from"./app-Ch46AmTP.js";function i({type:t="text",className:o="",options:s,...d}){return r.jsx("select",{...d,className:"rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "+o,children:s.map((e,n)=>r.jsx("option",{value:e.value,children:e.label},n))})}export{i as S};

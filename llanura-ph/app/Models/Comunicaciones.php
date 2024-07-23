@@ -14,6 +14,7 @@ class Comunicaciones extends Model
 
     protected $fillable = [
         'fecha',
+        'origen',
         'destinatario',
         'asunto',
         'comunicado'        
@@ -21,5 +22,10 @@ class Comunicaciones extends Model
 
     public function enviar(){
         return $this->belongsTo(User::class, 'destinatario', 'name');
+    }
+
+
+    public function leer(Request $request){
+        $mensajes = Comunicaciones::where('destinatario', $request)->get();
     }
 }

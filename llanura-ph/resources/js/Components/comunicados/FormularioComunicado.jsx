@@ -3,42 +3,67 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
+import {
+    Select,
+    MenuItem
+} from '@mui/material';
 
 export default function FormularioComunicados(props){
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { 
+        data, 
+        setData, 
+        post, 
+        processing, 
+        errors, 
+        reset,         
+    } = useForm({
+        origen:props.auth.user.name,
         destinatario: '',
         asunto: '',
         comunicado: ''
-    });    
+    });
+
+    const [listaUsuarios, setListaUsuarios] = useState([]);
 
     useEffect(() => {
+        setListaUsuarios(props.usuarios);
         return () => {
-            reset('destinatario', 'asunto', 'comunicado');
-        };
+            reset('origen','destinatario', 'asunto', 'comunicado');            
+        };        
     }, []);
+    
 
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('comunicaciones.store'));
+        post(route('comunicaciones.store'))
+        alert("Mensaje enviado a "+data.destinatario + " desde "+data.origen);
+        reset('origen','destinatario', 'asunto', 'comunicado');
     };
 
     return(
         <form onSubmit={submit}>
-            <div>
+            <input name='origen' type='hidden' value={data.origen}/>
+
+            <div className="mt-4">                    
                 <InputLabel htmlFor="destinatario" value="Destinatario" />
-                <TextInput
+
+                <Select
                     id="destinatario"
                     name="destinatario"
                     value={data.destinatario}
                     className="mt-1 block w-full"
-                    autoComplete="destinatario"
-                    isFocused={true}
                     onChange={(e) => setData('destinatario', e.target.value)}
                     required
-                />
+                >
+                    {
+                        listaUsuarios.map((usuario, index)=>(
+                            <MenuItem key={index} value={usuario}>{usuario}</MenuItem>
+                        ))
+                    }
+                </Select>
+
                 <InputError message={errors.destinatario} className="mt-2" />
             </div>
 
@@ -72,12 +97,11 @@ export default function FormularioComunicados(props){
             </div>
 
             <div className="flex items-center justify-end mt-4">
-                <PrimaryButton className="ms-4" disabled={processing}>
+                <PrimaryButton className="ms-4" 
+                    disabled={processing}>
                     Enviar
                 </PrimaryButton>
             </div>
         </form>
     );
 }
-
-

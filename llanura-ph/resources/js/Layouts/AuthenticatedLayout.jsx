@@ -11,7 +11,7 @@ export default function Authenticated({ user, header, children }) {
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto px-6 sm:px-12 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">                            
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -21,6 +21,10 @@ export default function Authenticated({ user, header, children }) {
 
                                 <NavLink href={route('comunicaciones.create')} active={route().current('comunicaciones.create')}>
                                     Comunicados
+                                </NavLink>
+
+                                <NavLink href={route('correspondencia.create')} active={route().current('correspondencia.create')}>
+                                    Correspondencia
                                 </NavLink>
                             </div>
                         </div>

@@ -1,19 +1,18 @@
 import React from 'react';
-import PrimaryButton from '@/Components/PrimaryButton';
 import BotonEnlace from '../BotonEnlace';
 
-const AdminDashboard = (props) => {
-    
+const AdminDashboard = (props) => {    
     
     return (
         <div>
-            <h1>¿Que desea hacer?</h1>
+            <h1>¿Bienvenido señor administrador, que desea hacer?</h1>
 
             <div className="flex items-center justify-center mt-4">
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
                     method="get" 
-                    href={route('register')} 
+                    //href={route('register')} 
+                    href={route('usuarios.index')} 
                     as="button"
                     texto ={"Gestión de Usuarios"}
                 />
@@ -22,12 +21,12 @@ const AdminDashboard = (props) => {
             <div className="flex items-center justify-center mt-4">
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
-                    //method="post" 
-                    //href={route('#')} 
+                    method="get"
+                    href={route('correspondencia.gestion')}
                     as="button"
                     texto ={"Gestión de Correspondencia"}
                 />
-            </div>            
+            </div>        
         </div>
     );
 }

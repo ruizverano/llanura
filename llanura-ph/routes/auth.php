@@ -9,7 +9,11 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\NovedadController;
+use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ComunicacionesController;
+use App\Http\Controllers\CorrespondenciaController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {       
@@ -29,15 +33,18 @@ Route::middleware('guest')->group(function () {
                 ->name('password.reset');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.store');
+                ->name('password.store');    
+                
 });
 
 Route::middleware('auth')->group(function () {
 
+    
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
     
     Route::post('register', [RegisteredUserController::class, 'store']);
+    
 
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
@@ -60,10 +67,47 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 
+    /**Comunicaciones */
+
     Route::get('comunicaciones', [ComunicacionesController::class, 'create'])
-            ->middleware(['auth', 'verified'])->name('comunicaciones.create');
+             ->middleware(['auth', 'verified'])->name('comunicaciones.create');
 
     Route::post('comunicaciones', [ComunicacionesController::class, 'store'])
-    ->middleware(['auth', 'verified'])->name('comunicaciones.store');
+             ->middleware(['auth', 'verified'])->name('comunicaciones.store');
+
+    /**Correspondencia */
+
+    Route::get('correspondencia', [CorrespondenciaController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('correspondencia.create');
+
+    Route::get('gestion_correspondencia', [CorrespondenciaController::class, 'gestion'])
+    ->middleware(['auth', 'verified'])->name('correspondencia.gestion');
+
+    Route::post('correspondencia', [CorrespondenciaController::class, 'store'])
+             ->middleware(['auth', 'verified'])->name('correspondencia.store');    
+
+    Route::post('entregar', [CorrespondenciaController::class, 'entregar'])
+    ->middleware(['auth', 'verified'])->name('entregar');
+
+    /**Novedades */
+
+    Route::get('novedades', [NovedadController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('novedad.create');
+
+    Route::post('novedades', [NovedadController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('novedad.store');
+
+    /**Registros */
+
+    Route::get('registro', [RegistroController::class, 'create'])
+    ->middleware(['auth', 'verified'])->name('registro.create');
+
+    Route::post('registro', [RegistroController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('registro.store');
+
+    /**Usuarios */
+
+    Route::get('usuarios', [SuperAdminController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('usuarios.index');
 
 });

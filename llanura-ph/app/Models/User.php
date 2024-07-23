@@ -55,4 +55,9 @@ class User extends Authenticatable
     public function enviarMensaje() {
         return $this->hasMany(Comunicaciones::class, 'destinatario');
     }
+
+    public function getAllUsuarios(){
+        $usuarios = $this->pluck('name');
+        return $usuarios->toArray();
+    }
 }
