@@ -60,4 +60,10 @@ class User extends Authenticatable
         $usuarios = $this->pluck('name');
         return $usuarios->toArray();
     }
+
+    public function pushNotificationTokens()
+    {
+        return $this->hasMany(PushNotificationToken::class);
+    }
+
 }
