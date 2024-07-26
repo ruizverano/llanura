@@ -1,5 +1,6 @@
 // App.js
 import React, {useEffect} from 'react';
+import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
@@ -13,7 +14,16 @@ import Pusher from 'pusher-js/types/src/core/pusher';
 import pusherJs from 'pusher-js';
 
 function App() {
+  useEffect(() => {
+    requestForToken();
 
+    onMessageListener()
+        .then((payload) => {
+            console.log('Message received. ', payload);
+            // Muestra la notificación en la UI
+        })
+        .catch((err) => console.log('failed: ', err));
+}, []);
     /*
     useEffect(() => {
         messaging.requestPermission()

@@ -53,6 +53,7 @@ class ComunicacionesController extends Controller
             'comunicado' => $request->comunicado,
         ]);
 
+          $destinatario = User::where('name', $request->destinatario)->first();
         $userModel->notify(new NewMessageNotification($request->comunicado));//probando notificacion push
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
