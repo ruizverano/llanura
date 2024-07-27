@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Auth\Events\Registered;
 
+use App\Models\MyEvent;
+
 use App\Notifications\NewMessageNotification;
 
 class ComunicacionesController extends Controller
@@ -37,7 +39,8 @@ class ComunicacionesController extends Controller
 
         $userModel = new User();
 
-        
+        //$evento = new MyEvent();
+
         $request->validate([
             'origen' => 'string',
             'destinatario' => 'required|exists:users,name',
@@ -52,8 +55,10 @@ class ComunicacionesController extends Controller
             'asunto' => $request->asunto,
             'comunicado' => $request->comunicado,
         ]);
+        
+        //event(new MyEvent('hello world'));
 
-          $destinatario = User::where('name', $request->destinatario)->first();
+        $destinatario = User::where('name', $request->destinatario)->first();
         $userModel->notify(new NewMessageNotification($request->comunicado));//probando notificacion push
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
