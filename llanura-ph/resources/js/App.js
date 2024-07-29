@@ -1,5 +1,5 @@
 // App.js
-import React from 'react';
+import React, {useEffect} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
@@ -7,7 +7,8 @@ import SuperAdminDashboard from './SuperAdminDashboard';
 import ResidenteDashboard from './ResidenteDashboard';
 import PorteroDashboard from './PorteroDashboard';
 
-function App() {
+function App() {    
+
     return (
         <AuthProvider>
             <Router>

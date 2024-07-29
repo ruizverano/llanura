@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     TableContainer,
     Table,
@@ -10,7 +10,26 @@ import {
     Typography
 } from '@mui/material';
 
+import { messaging } from '../../firebase';
+
 export default function TablaComunicados({ usuario, mensajes }) {
+
+    useEffect(() => {       
+        console.log(messaging.logEvents);
+        // messaging.requestPermission()
+        // .then(() => {
+        //     console.log('Permiso de notificacion otorgado');
+        //     return messaging.getToken();
+        // })
+        // .then((token)=> {
+        //     console.log('FCM Token: ', token);
+        //     //envia el token al servidor para suscribir al usuario a las notificaciones push
+        // })
+        // .catch((err) =>{
+        //     console.log('no hubo permiso de notificacion ', err);
+        // });
+    },[]);
+
     return (
         <TableContainer component={Paper}>
             <Typography variant="h6" component="div" style={{ padding: '16px' }}>

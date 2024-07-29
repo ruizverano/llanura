@@ -1,0 +1,43 @@
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAx6zfOIkT0_udEqz7Kyttjx-SqiurJL5o",
+    authDomain: "llanura-37340.firebaseapp.com",
+    projectId: "llanura-37340",
+    storageBucket: "llanura-37340.appspot.com",
+    messagingSenderId: "496175761072",
+    appId: "1:496175761072:web:2590e0812d9a2b9e429d75",
+    measurementId: "G-SPPDP961L6"
+};
+
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+// Solicitar permiso de notificación y obtener token
+const requestNotificationPermission = async () => {
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            const currentToken = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY' });
+            if (currentToken) {
+                console.log('Token recibido:', currentToken);
+                // Envía el token al servidor para almacenarlo y usarlo para enviar notificaciones
+            } else {
+                console.log('No se obtuvo token de registro. Solicite permisos para generar uno.');
+            }
+        } else {
+            console.log('Permiso de notificación no concedido.');
+        }
+    } catch (err) {
+        console.error('Error al obtener el token:', err);
+    }
+};
+
+// Manejo de mensajes cuando la aplicación está en primer plano
+onMessage(messaging, (payload) => {
+    console.log('Mensaje recibido en primer plano:', payload);
+    // Aquí puedes manejar el mensaje, por ejemplo, mostrando una notificación personalizada
+});
+
+export { messaging, requestNotificationPermission };
