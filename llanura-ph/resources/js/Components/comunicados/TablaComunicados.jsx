@@ -10,12 +10,13 @@ import {
     Typography
 } from '@mui/material';
 
-import { messaging } from '../../firebase';
+import { messaging, requestNotificationPermission } from '../../firebase';
 
 export default function TablaComunicados({ usuario, mensajes }) {
 
-    useEffect(() => {       
-        console.log(messaging.logEvents);
+    useEffect(() => {  
+        requestNotificationPermission();
+        //requestNotificationPermission();
         // messaging.requestPermission()
         // .then(() => {
         //     console.log('Permiso de notificacion otorgado');
