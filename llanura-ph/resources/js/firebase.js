@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage} from 'firebase/messaging';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAx6zfOIkT0_udEqz7Kyttjx-SqiurJL5o",
@@ -37,6 +37,29 @@ getToken(messaging, { vapidKey }).then((currentToken)=> {
 //       }
 //     });
 //   }
+
+export const requestForToken = () => {
+    return getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY' })
+      .then((currentToken) => {
+        if (currentToken) {
+          console.log('current token for client: ', currentToken);
+          // Perform any other neccessary action with the token
+        } else {
+          console.log('No registration token available. Request permission to generate one.');
+        }
+      })
+      .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+      });
+  };
+  
+  export const onMessageListener = () =>{
+    new Promise((resolve) => {
+      onMessage(messaging, (payload) => {
+        resolve(payload);
+      });
+    });
+}
 
   export const requestNotificationPermission = async () => {
     try {

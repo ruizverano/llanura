@@ -10,26 +10,37 @@ import {
     Typography
 } from '@mui/material';
 
-import { messaging, requestNotificationPermission } from '../../firebase';
+import { messaging, requestNotificationPermission, requestForToken, onMessageListener } from '../../firebase';
 
 export default function TablaComunicados({ usuario, mensajes }) {
 
-    useEffect(() => {  
-        requestNotificationPermission();
-        //requestNotificationPermission();
-        // messaging.requestPermission()
-        // .then(() => {
-        //     console.log('Permiso de notificacion otorgado');
-        //     return messaging.getToken();
-        // })
-        // .then((token)=> {
-        //     console.log('FCM Token: ', token);
-        //     //envia el token al servidor para suscribir al usuario a las notificaciones push
-        // })
-        // .catch((err) =>{
-        //     console.log('no hubo permiso de notificacion ', err);
-        // });
-    },[]);
+    // useEffect(() => {  
+    //     requestNotificationPermission();
+    //     //requestNotificationPermission();
+    //     // messaging.requestPermission()
+    //     // .then(() => {
+    //     //     console.log('Permiso de notificacion otorgado');
+    //     //     return messaging.getToken();
+    //     // })
+    //     // .then((token)=> {
+    //     //     console.log('FCM Token: ', token);
+    //     //     //envia el token al servidor para suscribir al usuario a las notificaciones push
+    //     // })
+    //     // .catch((err) =>{
+    //     //     console.log('no hubo permiso de notificacion ', err);
+    //     // });
+    // },[messaging]);
+
+    useEffect(() => {
+        requestForToken();
+    
+        onMessageListener()
+          .then((payload) => {
+            console.log('Message received. ', payload);
+            // Custom action can be performed here
+          })
+          .catch((err) => console.log('failed: ', err));
+      }, []);
 
     return (
         <TableContainer component={Paper}>
@@ -47,6 +58,7 @@ export default function TablaComunicados({ usuario, mensajes }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    <button>click</button>
                     {mensajes.map((mensaje, index) => (
                         <TableRow key={index}>
                             <TableCell>{index + 1}</TableCell>
