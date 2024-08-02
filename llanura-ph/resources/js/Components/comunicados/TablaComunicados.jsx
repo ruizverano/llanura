@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
     TableContainer,
     Table,
@@ -10,36 +10,43 @@ import {
     Typography
 } from '@mui/material';
 
-import { messaging, requestNotificationPermission, requestForToken, onMessageListener } from '../../firebase';
+import { requestNotificationPermission, onMessageListener } from '../../firebase';
 
 export default function TablaComunicados({ usuario, mensajes }) {
 
-    // useEffect(() => {  
-    //     requestNotificationPermission();
-    //     //requestNotificationPermission();
-    //     // messaging.requestPermission()
-    //     // .then(() => {
-    //     //     console.log('Permiso de notificacion otorgado');
-    //     //     return messaging.getToken();
-    //     // })
-    //     // .then((token)=> {
-    //     //     console.log('FCM Token: ', token);
-    //     //     //envia el token al servidor para suscribir al usuario a las notificaciones push
-    //     // })
-    //     // .catch((err) =>{
-    //     //     console.log('no hubo permiso de notificacion ', err);
-    //     // });
-    // },[messaging]);
-
     useEffect(() => {
-        requestForToken();
+        requestNotificationPermission().then((token) => {
+          if (token) {
+            // Envía el token al backend para almacenar
+            fetch('http://localhost:8000/api/save-token', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+                },
+                body: JSON.stringify({ token: 'd-2xcs72cu1kzCiEZEBAdh:APA91bG_gtxi1z39mt3h0Q79jw6qyVgunz1l1d7PzzehuF2w3TqgSctShSnEW4cepFdO_B_NfYMlF1gAU_bs43aT1xoETq5-zP8ZDhmi27kHHVq5WUF7tNN18VZ52Xd1rbK8vnL8MWD5' })
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Error al enviar el token al servidor');
+                }
+                return response.json();
+              })
+              .then(data => {
+                console.log('Token almacenado en el servidor:', data);
+              })
+              .catch(err => {
+                console.error('Error al enviar el token al servidor:', err);
+              });              
+          }
+        });
     
         onMessageListener()
           .then((payload) => {
-            console.log('Message received. ', payload);
-            // Custom action can be performed here
+            console.log('Mensaje recibido: ', payload);
+            // Muestra la notificación o realiza alguna acción
           })
-          .catch((err) => console.log('failed: ', err));
+          .catch((err) => console.log('Error al recibir mensaje: ', err));
       }, []);
 
     return (
@@ -57,8 +64,7 @@ export default function TablaComunicados({ usuario, mensajes }) {
                         <TableCell><b>Comunicado</b></TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    <button>click</button>
+                <TableBody>                    
                     {mensajes.map((mensaje, index) => (
                         <TableRow key={index}>
                             <TableCell>{index + 1}</TableCell>

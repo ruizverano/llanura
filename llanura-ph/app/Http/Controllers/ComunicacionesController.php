@@ -12,6 +12,8 @@ use Illuminate\Auth\Events\Registered;
 
 class ComunicacionesController extends Controller
 {
+    //protected $factory = (new Factory)->withServiceAccount(storage_path('app/firebase-service-account.json'));
+
     public function create(): Response
     {
         $usuario = Auth::user()->name;
