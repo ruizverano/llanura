@@ -15,9 +15,9 @@ export default function FormularioComunicados(props){
         data, 
         setData, 
         post, 
-        processing, 
-        errors, 
-        reset,         
+        processing,
+        errors,
+        reset,
     } = useForm({
         origen:props.auth.user.name,
         destinatario: '',
@@ -27,18 +27,17 @@ export default function FormularioComunicados(props){
 
     const [listaUsuarios, setListaUsuarios] = useState([]);
 
-    useEffect(() => {    
-
+    useEffect(() => {
         setListaUsuarios(props.usuarios);
         return () => {
-            reset('origen','destinatario', 'asunto', 'comunicado');            
-        };        
+            reset('origen','destinatario', 'asunto', 'comunicado');
+        };
     }, []);
     
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('comunicaciones.store'))
+        post(route('comunicaciones.store'));
         alert("Mensaje enviado a "+data.destinatario + " desde "+data.origen);
         reset('origen','destinatario', 'asunto', 'comunicado');
     };

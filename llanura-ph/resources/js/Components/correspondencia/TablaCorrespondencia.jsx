@@ -16,40 +16,9 @@ import DangerButton from '../DangerButton';
 export default function PaquetesRecibidos(props) {
 
     const { usuario, paquetes, gestion } = props;
-    
-    const notificaciones = () => {
-        if ('Notification' in window) {
-            // Solicitar permiso para notificaciones
-            Notification.requestPermission().then(permission => {
-              if (permission === 'granted') {
-                console.log('Notificaciones permitidas');
-              } else {
-                console.log('Notificaciones denegadas');
-              }
-            });
-          } else {
-            console.log('Notificaciones no soportadas en este navegador');
-          }
-    }
-
-    const sendNotification = () => {
-        if (Notification.permission === 'granted') {
-          new Notification('¡Hola!', {
-            body: 'Esto es una notificación de prueba.',
-            icon: 'https://example.com/icon.png'
-          });
-        } else {
-          console.log('Permiso para notificaciones no concedido');
-        }
-      };
-
-      useEffect(()=>{
-        notificaciones();
-      }, []);
 
     return (
-        <div>
-            <button onClick={sendNotification}>Enviar Notificación</button>
+        <div>            
             <TableContainer component={Paper}>
                 <Typography variant="h6" component="div" style={{ padding: '16px' }}>
                     {gestion ? `Paquetes recibidos, puede gestionar la entrega con el respectivo Botón` : `Paquetes recibidos por ${usuario}`}
