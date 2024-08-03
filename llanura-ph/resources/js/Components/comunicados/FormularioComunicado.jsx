@@ -27,7 +27,8 @@ export default function FormularioComunicados(props){
 
     const [listaUsuarios, setListaUsuarios] = useState([]);
 
-    useEffect(() => {
+    useEffect(() => {    
+
         setListaUsuarios(props.usuarios);
         return () => {
             reset('origen','destinatario', 'asunto', 'comunicado');            
@@ -44,7 +45,7 @@ export default function FormularioComunicados(props){
 
     return(
         <form onSubmit={submit}>
-            <input name='origen' type='hidden' value={data.origen}/>
+            <input name='origen' type='hidden' value={data.origen}/>            
 
             <div className="mt-4">                    
                 <InputLabel htmlFor="destinatario" value="Destinatario" />
@@ -94,7 +95,7 @@ export default function FormularioComunicados(props){
                     rows="4"
                 />
                 <InputError message={errors.comunicado} className="mt-2" />
-            </div>
+            </div>            
 
             <div className="flex items-center justify-end mt-4">
                 <PrimaryButton className="ms-4" 
