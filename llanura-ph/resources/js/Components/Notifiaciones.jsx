@@ -32,6 +32,7 @@ export default function Notificaciones() {
 
     useEffect(() => {
         otorgarPermisos();        
+        alert('entra');
     }, [])
 
     return (
