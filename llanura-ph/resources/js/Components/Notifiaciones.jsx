@@ -36,10 +36,21 @@ export default function Notificaciones() {
 
     return (
         <Button
-            variant='standard'
-            onClick={sendNotification}
-        >
-            Notificacion
-        </Button>
+        variant='contained'
+        onClick={sendNotification}
+        sx={{
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
+            '&:hover': {
+                backgroundColor: '#333333',
+            },
+            padding: '10px 20px',
+            borderRadius: '5px',
+            fontSize: '16px',
+            textTransform: 'none',  // Para que el texto no esté en mayúsculas
+        }}
+    >
+        Notificacion
+    </Button>
     );
 }
