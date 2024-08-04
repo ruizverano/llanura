@@ -25,7 +25,7 @@ class NotificationController extends Controller
 
         $this->firebase->sendNotification($token, $title, $body);
 
-        $this->sendEmail();
+        //$this->sendEmail();
 
         return response()->json(['status' => 'success']);
     }
