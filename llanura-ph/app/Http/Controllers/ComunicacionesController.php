@@ -67,7 +67,7 @@ class ComunicacionesController extends Controller
 
         $notificacion->send($prueba);
 
-        $this->sendMail();
+        $this->sendMail($request->origen, $request->asunto,$request->comunicado);
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
@@ -77,14 +77,14 @@ class ComunicacionesController extends Controller
         return $mensajes->toArray();        
     }
 
-    public function sendMail()
+    public function sendMail(String $origen, String $asunto, String $comunicado)
     {
         $details = [
-            'title' => 'Correo de Ejemplo de Laravel con Mailgun',
-            'body' => 'Este es un correo de prueba enviado utilizando Mailgun.'
+            'title' => 'Correo desde Llanura-PH asunto:'.$asunto,
+            'body' => $origen.' te dice lo siguiente: '.$comunicado
         ];
 
-        Mail::to('recipient@example.com')->send(new ExampleMail($details));
+        Mail::to('cristianmr23@gmail.com')->send(new ExampleMail($details));
 
         return 'Correo enviado';
     }
