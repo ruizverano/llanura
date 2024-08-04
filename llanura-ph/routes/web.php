@@ -11,6 +11,9 @@ use App\Http\Controllers\PorteroController;
 use App\Http\Controllers\ComunicacionesController;
 use App\Http\Middleware\CheckRole;
 
+use App\Http\Controllers\MailController;
+
+
 /* Route::get('/', function () {
     return Inertia::render('Principal', [
         'canLogin' => Route::has('login'),
@@ -38,27 +41,6 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-
-// Route::middleware(['auth'])->group(function (){
-//     Route::get('/comunicaciones', [ComunicacionesController::class, 'create'])->name('comunicaciones.create');
-//     Route::post('/comunicaciones', [ComunicacionesController::class, 'store'])->name('comunicaciones.store');
-//});
-
-
-// API routes for role-based access
-// Route::middleware(['auth', CheckRole::class.':1'])->group(function () {
-//     Route::get('/api/admin', [SuperAdminController::class, 'index']);
-// });
-
-// Route::middleware(['auth', CheckRole::class.':2'])->group(function () {
-//     Route::get('/api/residente', [ResidenteController::class, 'index']);
-// });
-
-// Route::middleware(['auth', CheckRole::class.':3'])->group(function () {
-//     Route::get('/api/portero', [PorteroController::class, 'index']);
-// });
-
-
 Route::middleware(['auth', 'checkRole:1'])->group(function () {
     Route::get('/super-admin', [SuperAdminController::class, 'index']);
 });
@@ -70,3 +52,6 @@ Route::middleware(['auth', 'checkRole:2'])->group(function () {
 Route::middleware(['auth', 'checkRole:3'])->group(function () {
     Route::get('/portero', [PorteroController::class, 'index']);
 });
+
+
+Route::get('/send-mail', [MailController::class, 'sendMail']);

@@ -14,9 +14,9 @@ import { requestForToken, onMessageListener } from '../../firebase';
 export default function FormularioComunicados(props){
 
     const [token, setToken] = useState('');
-  const [notification, setNotification] = useState({ title: '', body: '' });
+    const [notification, setNotification] = useState({ title: '', body: '' });
 
-    const { 
+    const {
         data, 
         setData, 
         post, 
@@ -37,8 +37,7 @@ export default function FormularioComunicados(props){
         return () => {
             reset('origen','destinatario', 'asunto', 'comunicado');
         };
-    }, []);
-    
+    }, []);    
 
     const submit = (e) => {
         e.preventDefault();

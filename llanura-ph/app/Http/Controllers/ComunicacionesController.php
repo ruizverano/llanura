@@ -13,6 +13,9 @@ use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\NotificationController;
 use App\Services\FirebaseService;
 
+use App\Mail\ExampleMail;
+use Illuminate\Support\Facades\Mail; // Importar la fachada Mail
+
 class ComunicacionesController extends Controller
 {
     //protected $factory = (new Factory)->withServiceAccount(storage_path('app/firebase-service-account.json'));
@@ -62,7 +65,9 @@ class ComunicacionesController extends Controller
             'comunicado' => $request->comunicado,
         ]);
 
-        $notificacion->send($prueba);                
+        $notificacion->send($prueba);
+
+        $this->sendMail();
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
@@ -70,5 +75,17 @@ class ComunicacionesController extends Controller
     public function getComunicaciones(?string $destinatario = null){        
         $mensajes = Comunicaciones::where('destinatario', $destinatario)->get();
         return $mensajes->toArray();        
+    }
+
+    public function sendMail()
+    {
+        $details = [
+            'title' => 'Correo de Ejemplo de Laravel con Mailgun',
+            'body' => 'Este es un correo de prueba enviado utilizando Mailgun.'
+        ];
+
+        Mail::to('recipient@example.com')->send(new ExampleMail($details));
+
+        return 'Correo enviado';
     }
 }
