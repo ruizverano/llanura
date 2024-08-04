@@ -9,6 +9,9 @@ use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Auth\Events\Registered;
+    
+use App\Http\Controllers\NotificationController;
+use App\Services\FirebaseService;
 
 class ComunicacionesController extends Controller
 {
@@ -33,6 +36,17 @@ class ComunicacionesController extends Controller
 
     public function store(Request $request)
     {
+
+        $firebase = new FirebaseService();
+        
+        $notificacion = new NotificationController($firebase);
+
+        $prueba = [
+            "token" => "cyQCpZskC3zydMcwafF38x:APA91bFik7JsHrO4WofUJFQGNj8YQPEpcnd-Usx4Kh14G5zSddEvi8lzeDSOyXg3GAYjVazyv8maBUYeguLMV1lDA-eJ7VPYtr2tH-xNoUY5EHKFYYLv5oE6cPkbMugVjBOcTZp0cI-l",
+            "title" => "Test Notification",
+            "body" => "This is a test notification from Laravel."
+        ];
+
         $request->validate([
             'origen' => 'string',
             'destinatario' => 'required|exists:users,name',
@@ -47,6 +61,8 @@ class ComunicacionesController extends Controller
             'asunto' => $request->asunto,
             'comunicado' => $request->comunicado,
         ]);
+
+        $notificacion->send($prueba);                
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }

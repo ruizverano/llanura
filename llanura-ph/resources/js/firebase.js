@@ -16,6 +16,21 @@ const messaging = getMessaging(app);
 
 const vapidKey = "BEmAkbMEw1nEuN5UQLzQmuKtHat3jLvqfi-ZSo2nthD-iR_EE4vjtqDtWnyehcTgBO75Dost1aRxbskVXwqCj_Y";
 
+export const requestForToken = () => {
+  return getToken(messaging, { vapidKey: "BEmAkbMEw1nEuN5UQLzQmuKtHat3jLvqfi-ZSo2nthD-iR_EE4vjtqDtWnyehcTgBO75Dost1aRxbskVXwqCj_Y" })
+    .then((currentToken) => {
+      if (currentToken) {
+        console.log('Token fetched successfully:', currentToken);
+        return currentToken;
+      } else {
+        console.log('No registration token available. Request permission to generate one.');
+      }
+    })
+    .catch((err) => {
+      console.error('An error occurred while retrieving token. ', err);
+    });
+};
+
 export const requestNotificationPermission = async () => {
   try {
     const permission = await Notification.requestPermission();
@@ -35,6 +50,13 @@ export const requestNotificationPermission = async () => {
   }
   return null;
 };
+
+// export const onMessageListener = () =>
+//   new Promise((resolve) => {
+//     onMessage(messaging, (payload) => {
+//       resolve(payload);
+//     });
+//   });
 
 export const onMessageListener = () =>
   new Promise((resolve, reject) => {

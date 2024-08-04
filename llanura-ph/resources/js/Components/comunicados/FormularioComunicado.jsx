@@ -9,7 +9,12 @@ import {
     MenuItem
 } from '@mui/material';
 
+import { requestForToken, onMessageListener } from '../../firebase';
+
 export default function FormularioComunicados(props){
+
+    const [token, setToken] = useState('');
+  const [notification, setNotification] = useState({ title: '', body: '' });
 
     const { 
         data, 
@@ -42,9 +47,32 @@ export default function FormularioComunicados(props){
         reset('origen','destinatario', 'asunto', 'comunicado');
     };
 
+    useEffect(() => {
+        requestForToken().then((currentToken) => {
+          if (currentToken) {
+            setToken(currentToken);
+          }
+        });
+    
+        onMessageListener().then((payload) => {
+          setNotification({ title: payload.notification.title, body: payload.notification.body });
+        });
+      }, []);
+
     return(
         <form onSubmit={submit}>
-            <input name='origen' type='hidden' value={data.origen}/>            
+            <input name='origen' type='hidden' value={data.origen}/>   
+
+
+            <div>
+      <h1>Firebase Cloud Messaging con React</h1>
+      {notification.title && (
+        <div>
+          <h2>{notification.title}</h2>
+          <p>{notification.body}</p>
+        </div>
+      )}
+    </div>         
 
             <div className="mt-4">                    
                 <InputLabel htmlFor="destinatario" value="Destinatario" />

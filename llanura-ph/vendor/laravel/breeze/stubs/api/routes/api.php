@@ -10,5 +10,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 
-Route::post('/send-notification', [NotificationController::class, 'sendNotification']);
-Route::post('/api/save-token', [NotificationController::class, 'saveToken']);
+// Route::post('/send-notification', [NotificationController::class, 'sendNotification']);
+// Route::post('/api/save-token', [NotificationController::class, 'saveToken']);
+
+Route::post('/notification/send', [NotificationController::class, 'send']);

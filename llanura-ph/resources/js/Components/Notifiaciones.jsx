@@ -7,8 +7,7 @@ export default function Notificaciones() {
     
     const otorgarPermisos = () => {        
     
-        if ('Notification' in window) {
-            // Solicitar permiso para notificaciones si no ha sido otorgado o denegado
+        if ('Notification' in window) {            
             if (Notification.permission === 'default') {
                 Notification.requestPermission().then(permission => {
                     setPermission(permission);
