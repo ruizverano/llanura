@@ -45,7 +45,7 @@ export default function Comunicados({ auth, mensajes, usuarios }) {
                         {mostrarTabla && (
                             <TablaComunicados
                                 mensajes={mensajes}
-                                usuario={auth.user.name}
+                                usuario={auth.user}
                             />
                         )}
 

@@ -1,26 +1,18 @@
 import React from 'react';
 import BotonEnlace from '../BotonEnlace';
 
-const AdminDashboard = (props) => {    
-    
+const AdminDashboard = (props) => {
+
+    const {user} = props;
+ 
     return (
         <div>
-            <h1>¿Bienvenido señor administrador, que desea hacer -- este es un texto de prueba --?</h1>
+            <h1>¿Bienvenido señor administrador, que desea hacer?</h1>
 
             <div className="flex items-center justify-center mt-4">
                 <BotonEnlace 
                     tipo={"boton-enlace"} 
-                    method="get" 
-                    //href={route('register')}
-                    href={route('usuarios.index')} 
-                    as="button"
-                    texto ={"Gestión de Usuarios"}
-                />
-
-                <BotonEnlace 
-                    tipo={"boton-enlace"} 
-                    method="get" 
-                    //href={route('register')}
+                    method="get"                    
                     href={route('usuarios.index')} 
                     as="button"
                     texto ={"Gestión de Usuarios"}

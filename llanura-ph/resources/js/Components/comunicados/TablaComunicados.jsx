@@ -11,79 +11,125 @@ import {
     Typography
 } from '@mui/material';
 
-//import { requestNotificationPermission, onMessageListener } from '../../firebase';
+import GestionComunicados from './GestionComunicados';
+import { RadioGroup } from '@mui/material';
+import { Radio } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Button } from '@mui/material';
+import { useForm } from '@inertiajs/react';
 
-export default function TablaComunicados({ usuario, mensajes }) {
+export default function TablaComunicados(props) {
 
-  
+    const {
+        data, 
+        setData, 
+        post, 
+        processing,
+        errors,
+        reset,
+    } = useForm();
 
-    // useEffect(() => {
-    //     requestNotificationPermission().then((token) => {
-    //       if (token) {
-    //         // Envía el token al backend para almacenar
-    //         fetch('http://localhost:8000/api/save-token', {
-    //             method: 'POST',
-    //             headers: {
-    //               'Content-Type': 'application/json',
-    //               'Accept': 'application/json'
-    //             },
-    //             body: JSON.stringify({ token: 'd-2xcs72cu1kzCiEZEBAdh:APA91bG_gtxi1z39mt3h0Q79jw6qyVgunz1l1d7PzzehuF2w3TqgSctShSnEW4cepFdO_B_NfYMlF1gAU_bs43aT1xoETq5-zP8ZDhmi27kHHVq5WUF7tNN18VZ52Xd1rbK8vnL8MWD5' })
-    //           })
-    //           .then(response => {
-    //             if (!response.ok) {
-    //               throw new Error('Error al enviar el token al servidor');
-    //             }
-    //             return response.json();
-    //           })
-    //           .then(data => {
-    //             console.log('Token almacenado en el servidor:', data);
-    //           })
-    //           .catch(err => {
-    //             console.error('Error al enviar el token al servidor:', err);
-    //           });              
-    //       }
-    //     });
-    
-    //     onMessageListener()
-    //       .then((payload) => {
-    //         console.log('Mensaje recibido: ', payload);
-    //         // Muestra la notificación o realiza alguna acción
-    //       })
-    //       .catch((err) => console.log('Error al recibir mensaje: ', err));
-    //   }, []);
+    const { mensajes, usuario } = props;
 
+    const [mostrarIngreso, setMostrarIngreso] = useState(false);
+    const [ingresos, setIngresos] = useState({});
 
+    useEffect(() => {
+        const initialIngresos = mensajes.reduce((acc, _, index) => {
+            acc[index] = 'NO';
+            return acc;
+        }, {});
+        setIngresos(initialIngresos);
+    }, [mensajes]);
+
+    const handleRadioChange = (index, value) => {
+        setIngresos(prevState => ({
+            ...prevState,
+            [index]: value
+        }));
+    };
 
     return (
-      <>
-      
-        <TableContainer component={Paper}>
-            <Typography variant="h6" component="div" style={{ padding: '16px' }}>
-                Mensajes recibidos por {usuario}
-            </Typography>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell><b>Nro.</b></TableCell>
-                        <TableCell><b>Fecha dd/mm/aaaa</b></TableCell>
-                        <TableCell><b>Origen</b></TableCell>
-                        <TableCell><b>Asunto</b></TableCell>
-                        <TableCell><b>Comunicado</b></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>                    
-                    {mensajes.map((mensaje, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{index + 1}</TableCell>
-                            <TableCell>{mensaje.fecha}</TableCell>
-                            <TableCell>{mensaje.origen}</TableCell>
-                            <TableCell>{mensaje.asunto}</TableCell>
-                            <TableCell>{mensaje.comunicado}</TableCell>
+        <>
+            <TableContainer component={Paper}>
+                <Typography variant="h6" component="div" style={{ padding: '16px' }}>
+                    Mensajes recibidos por {usuario.name}
+                </Typography>
+                {usuario.rol_id === 2 && (
+                    <GestionComunicados
+                        usuario={usuario}
+                        mostrarIngreso={mostrarIngreso}
+                        setMostrarIngreso={setMostrarIngreso}
+                    />
+                )}
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell><b>Nro.</b></TableCell>
+                            <TableCell><b>Fecha dd/mm/aaaa</b></TableCell>
+                            <TableCell><b>Origen</b></TableCell>
+                            <TableCell><b>Asunto</b></TableCell>
+                            <TableCell><b>Comunicado</b></TableCell>
+                            {mostrarIngreso && (
+                                <TableCell><b>Ingreso</b></TableCell>
+                            )}
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {mensajes.map((mensaje, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{mensaje.fecha}</TableCell>
+                                <TableCell>{mensaje.origen}</TableCell>
+                                <TableCell>{mensaje.asunto}</TableCell>
+                                <TableCell>{mensaje.comunicado}</TableCell>
+                                {mostrarIngreso && (
+                                    <TableCell>
+                                        <RadioGroup
+                                            value={ingresos[index] || 'NO'}
+                                            onChange={(e) => handleRadioChange(index, e.target.value)}
+                                        >
+                                            <FormControlLabel value="SI" control={<Radio />} label="SI" />
+                                            <FormControlLabel value="NO" control={<Radio />} label="NO" />
+                                        </RadioGroup>
+
+                                        {ingresos[index] === 'SI' && (
+                                            <>
+                                                <TextField
+                                                    name='vehiculo'
+                                                    label="vehiculo"                                                    
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    margin="normal"
+                                                />
+
+                                                <input hidden name='id' value={mensaje.id}/>
+
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{
+                                                        backgroundColor: '#007BFF',
+                                                        color: '#ffffff',
+                                                        '&:hover': {
+                                                            backgroundColor: '#0056b3',
+                                                        },
+                                                        padding: '5px 10px',
+                                                        borderRadius: '4px',
+                                                    }}
+                                                    onClick={() => { alert('enviar id: ' + mensaje.id) }}
+                                                >
+                                                    Aceptar
+                                                </Button>
+                                            </>
+                                        )}
+                                    </TableCell>
+                                )}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
     );
 }

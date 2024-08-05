@@ -11,44 +11,58 @@ import {
     Grid
 } from '@mui/material';
 import BotonEnlace from '../BotonEnlace';
-import DangerButton from '../DangerButton';
+import ReporteCorrespondencia from './ReporteCorrespondencia';
 
 export default function PaquetesRecibidos(props) {
 
     const { usuario, paquetes, gestion } = props;
 
+    useEffect(()=>{
+        //console.log(usuario);
+    },[]);
+
     return (
         <div>            
             <TableContainer component={Paper}>
                 <Typography variant="h6" component="div" style={{ padding: '16px' }}>
-                    {gestion ? `Paquetes recibidos, puede gestionar la entrega con el respectivo Botón` : `Paquetes recibidos por ${usuario}`}
+                    {gestion ? `Paquetes recibidos, puede gestionar la entrega con el respectivo Botón` : `Paquetes recibidos por ${usuario.name}`}
                 </Typography>
+                {usuario.rol_id===1 && (
+                      <ReporteCorrespondencia {...props}/>
+                )}                  
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell><b>Nro.</b></TableCell>
-                            <TableCell><b>Fecha dd/mm/aaaa</b></TableCell>
-                            <TableCell><b>Portero</b></TableCell>
+                            <TableCell><b>Fecha (AAAA-MM-dd)</b></TableCell>                           
                             <TableCell><b>Descripción</b></TableCell>
-                            <TableCell><b>Origen</b></TableCell>
-                            <TableCell><b>Destino</b></TableCell>
-                            <TableCell><b>¿Entregado?</b></TableCell>
+                            {usuario.rol_id===2 && (
+                                <>
+                                    <TableCell><b>¿Entregado?</b></TableCell>
+                                    <TableCell><b>Origen</b></TableCell>
+                                    <TableCell><b>Destino</b></TableCell>
+                                </>
+                            )}                            
+                            
                             {gestion && (
                                 <TableCell><b>Gestionar</b></TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paquetes.filter(paquete => gestion || paquete.destino === usuario).map((paquete, index) => (
+                        {paquetes.filter(paquete => gestion || paquete.destino === usuario.name).map((paquete, index) => (
                             <TableRow key={index}>
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{paquete.fecha}</TableCell>
-                                <TableCell>{paquete.portero}</TableCell>
-                                <TableCell>{paquete.descripcion}</TableCell>
-                                <TableCell>{paquete.origen}</TableCell>
-                                <TableCell>{paquete.destino}</TableCell>
-                                <TableCell>{paquete.entregado === 1 ? 'SI' : 'NO'}</TableCell>
-                                {gestion && (
+                                <TableCell>{paquete.fecha}</TableCell>                                
+                                <TableCell>{paquete.descripcion}</TableCell>                                
+                                {usuario.rol_id===2 && (
+                                    <>
+                                        <TableCell>{paquete.entregado === 1 ? 'SI' : 'NO'}</TableCell>                    
+                                        <TableCell>{paquete.origen}</TableCell>
+                                        <TableCell>{paquete.destino}</TableCell>
+                                    </>
+                                    )}                                                                
+                                {gestion && usuario.rol_id===2 && (
                                     <TableCell>
                                         {paquete.entregado === 0 && (
                                             <BotonEnlace 

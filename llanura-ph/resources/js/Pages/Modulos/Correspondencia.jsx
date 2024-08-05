@@ -4,9 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioCorrespondencia from '@/Components/correspondencia/FormularioCorrespondencia';
 import PrimaryButton from '@/Components/PrimaryButton';
-import TablaCorrespondencia from '@/Components/correspondencia/TablaCorrespondencia';
-
-
+import PaquetesRecibidos from '@/Components/correspondencia/TablaCorrespondencia';
 
 
 export default function Correspondencia({ auth, paquetes, usuarios, gestion }) {
@@ -46,10 +44,10 @@ export default function Correspondencia({ auth, paquetes, usuarios, gestion }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                         {mostrarTabla && (
-                            <TablaCorrespondencia
+                            <PaquetesRecibidos
                                 gestion={gestion}
                                 paquetes={paquetes}
-                                usuario={auth.user.name}
+                                usuario={auth.user}
                             />
                         )}
 
@@ -62,7 +60,7 @@ export default function Correspondencia({ auth, paquetes, usuarios, gestion }) {
                             </div>
                         )}
 
-                        {!gestion &&
+                        {!gestion && nro_rol === 2 &&
                             <PrimaryButton
                                 onClick={alternarVista}
                                 className="ms-4"

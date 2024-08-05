@@ -9,7 +9,7 @@ import {
     MenuItem
 } from '@mui/material';
 
-import { requestForToken, onMessageListener } from '../../firebase';
+//import { requestForToken, onMessageListener } from '../../firebase';
 
 export default function FormularioComunicados(props){
 
@@ -46,17 +46,17 @@ export default function FormularioComunicados(props){
         reset('origen','destinatario', 'asunto', 'comunicado');
     };
 
-    useEffect(() => {
-        requestForToken().then((currentToken) => {
-          if (currentToken) {
-            setToken(currentToken);
-          }
-        });
+    // useEffect(() => {
+    //     requestForToken().then((currentToken) => {
+    //       if (currentToken) {
+    //         setToken(currentToken);
+    //       }
+    //     });
     
-        onMessageListener().then((payload) => {
-          setNotification({ title: payload.notification.title, body: payload.notification.body });
-        });
-      }, []);
+    //     onMessageListener().then((payload) => {
+    //       setNotification({ title: payload.notification.title, body: payload.notification.body });
+    //     });
+    //   }, []);
 
     return(
         <form onSubmit={submit}>

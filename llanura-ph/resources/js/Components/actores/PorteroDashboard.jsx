@@ -16,6 +16,16 @@ const PorteroDashboard = (props) => {
                 />
             </div>
 
+            <div className="flex items-center justify-center mt-4">
+                <BotonEnlace 
+                    tipo={"boton-enlace"} 
+                    method="get"
+                    href={route('correspondencia.gestion')}
+                    as="button"
+                    texto ={"Gestión de Correspondencia"}
+                />
+            </div>  
+
         </div>
     );
 }
