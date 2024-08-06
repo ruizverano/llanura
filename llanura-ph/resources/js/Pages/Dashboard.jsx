@@ -41,7 +41,7 @@ export default function Dashboard({ auth }) {
                                         user={auth.user}
                                     />
 
-                                    <Notificaciones />
+                                    {/* <Notificaciones /> */}
                                 </>
 
                             )}

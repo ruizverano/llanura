@@ -56,5 +56,6 @@ Route::middleware(['auth', 'checkRole:3'])->group(function () {
 
 Route::get('/send-mail', [MailController::class, 'sendMail']);
 
-Route::post('/guardar-vehiculo', [ComunicadoController::class, 'guardarVehiculo']);
+Route::post('/guardar-vehiculo', [ComunicacionesController::class, 'guardarVehiculo']);
 
+Route::get('/get-administradores', [SuperAdminController::class, 'getAdministradores']);

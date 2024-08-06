@@ -30,9 +30,11 @@ class ComunicacionesController extends Controller
 
         $usuarios = $userModel->getAllUsuarios();
 
+        $usuariosAdminPorteros = $userModel->getAdministradoresPorteros();
+
         return Inertia::render('Modulos/Comunicados', [
             'mensajes' => $mensajes,
-            'usuarios' => $usuarios,
+            'usuarios' => $usuariosAdminPorteros,            
         ]);
     }
 
@@ -67,7 +69,7 @@ class ComunicacionesController extends Controller
 
         $notificacion->send($prueba);
 
-        $this->sendMail($request->origen, $request->asunto,$request->comunicado);
+        //$this->sendMail($request->origen, $request->asunto,$request->comunicado);
 
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
@@ -92,7 +94,7 @@ class ComunicacionesController extends Controller
     public function guardarVehiculo(Request $request)
     {
         $request->validate([
-            'comunicado_id' => 'required|exists:comunicados,id',
+            'comunicado_id' => 'required|exists:comunicaciones,id',
             'vehiculo' => 'required|string|max:255'
         ]);
 
@@ -100,6 +102,6 @@ class ComunicacionesController extends Controller
         $comunicado->vehiculo = $request->vehiculo;
         $comunicado->save();
 
-        return response()->json(['message' => 'Vehículo guardado exitosamente'], 200);
+        return response()->json(['message' => 'Vehiculo guardado exitosamente'], 200);
     }
 }

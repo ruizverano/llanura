@@ -15,4 +15,14 @@ class SuperAdminController extends Controller
             'usuarios' => User::all()
         ]);
     }
+
+    public function getAdministradores(){
+        //$userModel = new User();
+
+        //$usuarios = $userModel->getAllUsuarios();
+
+        $usuarios = User::where('rol_id',1)->get();
+
+        return $usuarios;
+    }    
 }

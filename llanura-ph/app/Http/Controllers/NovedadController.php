@@ -10,9 +10,11 @@ use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 
+use App\Models\Comunicaciones;
+
 class NovedadController extends Controller
 {
-    
+
     public function create(): Response {
         $usuario = Auth::user()->name;
     
@@ -25,13 +27,16 @@ class NovedadController extends Controller
         return Inertia::render ('Modulos/Novedad');
     }
 
-    public function store(Request $request){
-
+    public function store(Request $request){   
+        
         $usuario = Auth::user()->name;
-    
 
         $request->validate([                        
-            'novedad' =>'required|string',            
+            'novedad' =>'required|string',             
+            'origen' => 'string',
+            //'destinatario' => 'required|exists:users,name',
+            //'asunto' => 'required|string|max:255',
+            //'comunicado' => 'required|string',
         ]);
 
         $correspondencia = Novedad::create([            
@@ -39,6 +44,25 @@ class NovedadController extends Controller
             'novedad'=> $request->novedad,            
         ]);
 
+        $comunicacion = Comunicaciones::create([
+            'fecha' => now(),
+            'origen' => $usuario,
+            'destinatario' => $request->destinatario,
+            'asunto' => 'Novedad',
+            'comunicado' => $request->novedad,
+        ]); 
+
+        //$this->comunicarAdministrador($request);
+
         return redirect()->back()->with('success', 'Registrado correctamente');
+    }
+
+    public function comunicarAdministrador(Request $request)
+    {             
+        $usuario = Auth::user()->name;       
+
+                   
+
+        return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
 }

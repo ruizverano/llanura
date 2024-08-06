@@ -3,6 +3,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { MenuItem, Select } from '@mui/material';
 
 export default function FormularioNovedad(auth){
 
@@ -17,10 +18,24 @@ export default function FormularioNovedad(auth){
         novedad: '',
     });
 
+    const [listaUsuarios, setListaUsuarios] = useState([]);
+
     const [nombreUsuario, setNombreUsuario] = useState('');
+
+    const obtenerUsuariosAdministradores = () => {
+        axios.get('/get-administradores')
+            .then(response => {
+                setListaUsuarios(response.data);
+                console.log(response.data[0].usuario);
+            })
+            .catch(error => {
+                console.log('Hubo un error guardando el vehículo', error);
+            });
+    };
 
     useEffect(()=>{
         setNombreUsuario(auth.auth.user.name);
+        obtenerUsuariosAdministradores();
     },[]);
 
     const submit = (e) => {
@@ -31,7 +46,28 @@ export default function FormularioNovedad(auth){
     };
 
     return(
-        <form onSubmit={submit}>            
+        <form onSubmit={submit}>
+            <div className="mt-4">                    
+                <InputLabel htmlFor="destinatario" value="Administrador" />
+
+                <Select
+                    id="destinatario"
+                    name="destinatario"
+                    value={data.destinatario}
+                    className="mt-1 block w-full"
+                    onChange={(e) => setData('destinatario', e.target.value)}
+                    required
+                >
+                    {
+                        listaUsuarios.map((usuario, index)=>(
+                            <MenuItem key={index} value={usuario.usuario}>{usuario.usuario}</MenuItem>
+                        ))
+                    }
+                </Select>
+
+                <InputError message={errors.destinatario} className="mt-2" />
+            </div>
+
             <div>
                 <InputLabel htmlFor="novedad" value="Novedad" />
                 <textarea

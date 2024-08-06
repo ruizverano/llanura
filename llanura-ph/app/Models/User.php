@@ -60,4 +60,9 @@ class User extends Authenticatable
         $usuarios = $this->pluck('name');
         return $usuarios->toArray();
     }
+
+    public function getAdministradoresPorteros(){
+        $usuarios = User::whereIn('rol_id', [1, 2])->get();
+        return $usuarios;
+    }
 }

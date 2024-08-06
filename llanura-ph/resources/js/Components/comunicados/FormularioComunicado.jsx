@@ -11,20 +11,20 @@ import {
 
 //import { requestForToken, onMessageListener } from '../../firebase';
 
-export default function FormularioComunicados(props){
+export default function FormularioComunicados(props) {
 
     const [token, setToken] = useState('');
     const [notification, setNotification] = useState({ title: '', body: '' });
 
     const {
-        data, 
-        setData, 
-        post, 
+        data,
+        setData,
+        post,
         processing,
         errors,
         reset,
     } = useForm({
-        origen:props.auth.user.name,
+        origen: props.auth.user.name,
         destinatario: '',
         asunto: '',
         comunicado: ''
@@ -33,17 +33,18 @@ export default function FormularioComunicados(props){
     const [listaUsuarios, setListaUsuarios] = useState([]);
 
     useEffect(() => {
+        console.log(props.usuarios);
         setListaUsuarios(props.usuarios);
         return () => {
-            reset('origen','destinatario', 'asunto', 'comunicado');
+            reset('origen', 'destinatario', 'asunto', 'comunicado');
         };
-    }, []);    
+    }, []);
 
     const submit = (e) => {
         e.preventDefault();
         post(route('comunicaciones.store'));
-        alert("Mensaje enviado a "+data.destinatario + " desde "+data.origen);
-        reset('origen','destinatario', 'asunto', 'comunicado');
+        alert("Mensaje enviado a " + data.destinatario + " desde " + data.origen);
+        reset('origen', 'destinatario', 'asunto', 'comunicado');
     };
 
     // useEffect(() => {
@@ -52,29 +53,29 @@ export default function FormularioComunicados(props){
     //         setToken(currentToken);
     //       }
     //     });
-    
+
     //     onMessageListener().then((payload) => {
     //       setNotification({ title: payload.notification.title, body: payload.notification.body });
     //     });
     //   }, []);
 
-    return(
+    return (
         <form onSubmit={submit}>
-            <input name='origen' type='hidden' value={data.origen}/>   
+            <input name='origen' type='hidden' value={data.origen} />
 
 
             <div>
-      <h1>Firebase Cloud Messaging con React</h1>
-      {notification.title && (
-        <div>
-          <h2>{notification.title}</h2>
-          <p>{notification.body}</p>
-        </div>
-      )}
-    </div>         
+                <h1>Firebase Cloud Messaging con React</h1>
+                {notification.title && (
+                    <div>
+                        <h2>{notification.title}</h2>
+                        <p>{notification.body}</p>
+                    </div>
+                )}
+            </div>
 
-            <div className="mt-4">                    
-                <InputLabel htmlFor="destinatario" value="Destinatario" />
+            <div className="mt-4">
+                <InputLabel htmlFor="destinatario" value="Destinatario (Admin y Portería)" />
 
                 <Select
                     id="destinatario"
@@ -85,8 +86,8 @@ export default function FormularioComunicados(props){
                     required
                 >
                     {
-                        listaUsuarios.map((usuario, index)=>(
-                            <MenuItem key={index} value={usuario}>{usuario}</MenuItem>
+                        listaUsuarios.map((usuario, index) => (
+                            <MenuItem key={index} value={usuario.usuario}>{usuario.usuario}</MenuItem>
                         ))
                     }
                 </Select>
@@ -121,10 +122,10 @@ export default function FormularioComunicados(props){
                     rows="4"
                 />
                 <InputError message={errors.comunicado} className="mt-2" />
-            </div>            
+            </div>
 
             <div className="flex items-center justify-end mt-4">
-                <PrimaryButton className="ms-4" 
+                <PrimaryButton className="ms-4"
                     disabled={processing}>
                     Enviar
                 </PrimaryButton>

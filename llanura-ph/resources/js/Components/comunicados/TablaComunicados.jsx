@@ -24,9 +24,10 @@ import axios from 'axios';
 export default function TablaComunicados(props) {
 
     const {
-        data, 
-        setData, 
-        post, 
+        data,
+        watch,
+        setData,
+        post,
         processing,
         errors,
         reset,
@@ -34,31 +35,19 @@ export default function TablaComunicados(props) {
 
     const { mensajes, usuario } = props;
 
-    const handleVehiculoChange = (event) => {
-        setVehiculo(event.target.value);
-      };
-
-      const handleGuardarVehiculo = (id) => {
-        axios.post('/api/guardar-vehiculo', { comunicado_id: comunicadoId, vehiculo })
-          .then(response => {
-            console.log(response.data.message);
-          })
-          .catch(error => {
-            console.error('Hubo un error guardando el vehículo', error);
-          });
-      };
-
-    const [vehiculo, setVehiculo] = useState('');
-
     const [mostrarIngreso, setMostrarIngreso] = useState(false);
     const [ingresos, setIngresos] = useState({});
 
-    useEffect(() => {
+    const resetear = () => {
         const initialIngresos = mensajes.reduce((acc, _, index) => {
             acc[index] = 'NO';
             return acc;
         }, {});
         setIngresos(initialIngresos);
+    }
+
+    useEffect(() => {
+       resetear();
     }, [mensajes]);
 
     const handleRadioChange = (index, value) => {
@@ -66,6 +55,16 @@ export default function TablaComunicados(props) {
             ...prevState,
             [index]: value
         }));
+    };
+
+    const handleGuardarVehiculo = (id) => {
+        axios.post('/guardar-vehiculo', { comunicado_id: id, vehiculo: data.vehiculo })
+            .then(response => {
+                alert(response.data.message);
+            })
+            .catch(error => {
+                alert('Hubo un error guardando el vehículo', error);
+            });
     };
 
     return (
@@ -116,13 +115,14 @@ export default function TablaComunicados(props) {
                                             <>
                                                 <TextField
                                                     name='vehiculo'
-                                                    label="vehiculo"                                                    
+                                                    label="vehiculo"
                                                     variant="outlined"
                                                     fullWidth
                                                     margin="normal"
+                                                    onChange={(e) => setData('vehiculo', e.target.value)}
                                                 />
 
-                                                <input hidden name='id' value={mensaje.id}/>
+                                                <input hidden name='id' value={mensaje.id} />
 
                                                 <Button
                                                     variant="contained"
