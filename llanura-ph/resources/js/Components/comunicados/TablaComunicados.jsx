@@ -19,6 +19,8 @@ import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import { useForm } from '@inertiajs/react';
 
+import axios from 'axios';
+
 export default function TablaComunicados(props) {
 
     const {
@@ -31,6 +33,22 @@ export default function TablaComunicados(props) {
     } = useForm();
 
     const { mensajes, usuario } = props;
+
+    const handleVehiculoChange = (event) => {
+        setVehiculo(event.target.value);
+      };
+
+      const handleGuardarVehiculo = (id) => {
+        axios.post('/api/guardar-vehiculo', { comunicado_id: comunicadoId, vehiculo })
+          .then(response => {
+            console.log(response.data.message);
+          })
+          .catch(error => {
+            console.error('Hubo un error guardando el vehículo', error);
+          });
+      };
+
+    const [vehiculo, setVehiculo] = useState('');
 
     const [mostrarIngreso, setMostrarIngreso] = useState(false);
     const [ingresos, setIngresos] = useState({});
@@ -117,7 +135,7 @@ export default function TablaComunicados(props) {
                                                         padding: '5px 10px',
                                                         borderRadius: '4px',
                                                     }}
-                                                    onClick={() => { alert('enviar id: ' + mensaje.id) }}
+                                                    onClick={() => { handleGuardarVehiculo(mensaje.id) }}
                                                 >
                                                     Aceptar
                                                 </Button>

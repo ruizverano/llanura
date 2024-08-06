@@ -88,4 +88,18 @@ class ComunicacionesController extends Controller
 
         return 'Correo enviado';
     }
+
+    public function guardarVehiculo(Request $request)
+    {
+        $request->validate([
+            'comunicado_id' => 'required|exists:comunicados,id',
+            'vehiculo' => 'required|string|max:255'
+        ]);
+
+        $comunicado = Comunicaciones::find($request->comunicado_id);
+        $comunicado->vehiculo = $request->vehiculo;
+        $comunicado->save();
+
+        return response()->json(['message' => 'Vehículo guardado exitosamente'], 200);
+    }
 }

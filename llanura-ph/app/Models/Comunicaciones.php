@@ -17,7 +17,8 @@ class Comunicaciones extends Model
         'origen',
         'destinatario',
         'asunto',
-        'comunicado'        
+        'comunicado',
+        'vehiculo'
     ];
 
     public function enviar(){
