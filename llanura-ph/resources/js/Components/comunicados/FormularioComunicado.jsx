@@ -2,19 +2,16 @@ import React, { useState, useEffect } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
-import {
-    Select,
-    MenuItem
+import {    
+    Autocomplete,
+    TextField
 } from '@mui/material';
 
-//import { requestForToken, onMessageListener } from '../../firebase';
-
 export default function FormularioComunicados(props) {
-
     const [token, setToken] = useState('');
     const [notification, setNotification] = useState({ title: '', body: '' });
+    const [selectedValue, setSelectedValue] = useState(null);
 
     const {
         data,
@@ -25,7 +22,7 @@ export default function FormularioComunicados(props) {
         reset,
     } = useForm({
         origen: props.auth.user.name,
-        destinatario: '',
+        destinatarios: [], // Modificado para soportar múltiples destinatarios
         asunto: '',
         comunicado: ''
     });
@@ -33,36 +30,22 @@ export default function FormularioComunicados(props) {
     const [listaUsuarios, setListaUsuarios] = useState([]);
 
     useEffect(() => {
-        console.log(props.usuarios);
         setListaUsuarios(props.usuarios);
         return () => {
-            reset('origen', 'destinatario', 'asunto', 'comunicado');
+            reset('origen', 'destinatarios', 'asunto', 'comunicado');
         };
-    }, []);
+    }, [props.usuarios, reset]);
 
     const submit = (e) => {
         e.preventDefault();
         post(route('comunicaciones.store'));
-        alert("Mensaje enviado a " + data.destinatario + " desde " + data.origen);
-        reset('origen', 'destinatario', 'asunto', 'comunicado');
+        alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
+        reset('origen', 'destinatarios', 'asunto', 'comunicado');
     };
-
-    // useEffect(() => {
-    //     requestForToken().then((currentToken) => {
-    //       if (currentToken) {
-    //         setToken(currentToken);
-    //       }
-    //     });
-
-    //     onMessageListener().then((payload) => {
-    //       setNotification({ title: payload.notification.title, body: payload.notification.body });
-    //     });
-    //   }, []);
 
     return (
         <form onSubmit={submit}>
             <input name='origen' type='hidden' value={data.origen} />
-
 
             <div>
                 <h1>Firebase Cloud Messaging con React</h1>
@@ -75,35 +58,44 @@ export default function FormularioComunicados(props) {
             </div>
 
             <div className="mt-4">
-                <InputLabel htmlFor="destinatario" value="Destinatario (Admin y Portería)" />
+                <InputLabel htmlFor="destinatarios" value="Destinatarios (Admin y Portería)" />
 
-                <Select
-                    id="destinatario"
-                    name="destinatario"
-                    value={data.destinatario}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData('destinatario', e.target.value)}
-                    required
-                >
-                    {
-                        listaUsuarios.map((usuario, index) => (
-                            <MenuItem key={index} value={usuario.usuario}>{usuario.usuario}</MenuItem>
-                        ))
-                    }
-                </Select>
+                <Autocomplete
+                    multiple
+                    disableClearable
+                    disablePortal
+                    fullWidth
+                    options={listaUsuarios}
+                    getOptionLabel={(option) => option.usuario}
+                    onChange={(event, newValues) => {
+                        setData('destinatarios', newValues.map(value => value.usuario));
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Destinatarios"
+                            style={{ fontSize: '1.3rem' }}
+                            fullWidth
+                            variant="standard"
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                        />
+                    )}
+                />
 
-                <InputError message={errors.destinatario} className="mt-2" />
+                <InputError message={errors.destinatarios} className="mt-2" />
             </div>
 
             <div className="mt-4">
                 <InputLabel htmlFor="asunto" value="Asunto" />
-                <TextInput
+                <TextField
                     id="asunto"
                     name="asunto"
-                    value={data.asunto}
+                    //value={data.asunto}
                     className="mt-1 block w-full"
                     autoComplete="asunto"
-                    onChange={(e) => setData('asunto', e.target.value)}
+                    //onChange={(e) => setData('asunto', e.target.value)}
                     required
                 />
                 <InputError message={errors.asunto} className="mt-2" />
@@ -111,15 +103,16 @@ export default function FormularioComunicados(props) {
 
             <div className="mt-4">
                 <InputLabel htmlFor="comunicado" value="Mensaje" />
-                <textarea
+                <TextField
                     id="comunicado"
                     name="comunicado"
-                    value={data.comunicado}
+                    //value={data.comunicado}
                     className="mt-1 block w-full"
                     autoComplete="comunicado"
-                    onChange={(e) => setData('comunicado', e.target.value)}
+                    //onChange={(e) => setData('comunicado', e.target.value)}
                     required
-                    rows="4"
+                    multiline
+                    rows={4}
                 />
                 <InputError message={errors.comunicado} className="mt-2" />
             </div>
