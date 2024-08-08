@@ -39,22 +39,19 @@ export default function FormularioComunicados(props) {
 
     const submit = (e) => {
         e.preventDefault();        
-        post(route('comunicaciones.store'));
-        reset('origen', 'destinatarios', 'asunto', 'comunicado');
-        alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
-        //  , {            
-        //     onSuccess: () => {
-        //         alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
-        //         reset('origen', 'destinatarios', 'asunto', 'comunicado');
-        //     }            
-        // });
+        post((route('comunicaciones.store')) , {            
+            onSuccess: () => {
+                alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
+                reset('origen', 'destinatarios', 'asunto', 'comunicado');
+            }            
+        });
     };
 
     return (
         <form onSubmit={submit}>
             <input name='origen' type='hidden' value={data.origen} />
 
-            <div>
+            {/* <div>
                 <h1>Firebase Cloud Messaging con React</h1>
                 {notification.title && (
                     <div>
@@ -62,10 +59,10 @@ export default function FormularioComunicados(props) {
                         <p>{notification.body}</p>
                     </div>
                 )}
-            </div>
+            </div> */}
 
             <div className="mt-4">
-                <InputLabel htmlFor="destinatarios" value="Destinatarios (Admin y Portería)" />
+                <InputLabel htmlFor="destinatarios" value="Destinatarios" />
 
                 <Autocomplete
                     name="destinatarios"
@@ -82,7 +79,7 @@ export default function FormularioComunicados(props) {
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Destinatarios"
+                            label="(Admin y Portería)"
                             style={{ fontSize: '1.3rem' }}
                             fullWidth
                             variant="standard"

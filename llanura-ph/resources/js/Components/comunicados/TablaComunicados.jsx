@@ -38,6 +38,8 @@ export default function TablaComunicados(props) {
     const [mostrarIngreso, setMostrarIngreso] = useState(false);
     const [ingresos, setIngresos] = useState({});
 
+    const[hayVehiculo, setHayVehiculo] = useState(false);
+
     const resetear = () => {
         const initialIngresos = mensajes.reduce((acc, _, index) => {
             acc[index] = 'NO';
@@ -61,6 +63,7 @@ export default function TablaComunicados(props) {
         axios.post('/guardar-vehiculo', { comunicado_id: id, vehiculo: data.vehiculo })
             .then(response => {
                 alert(response.data.message);
+                reset('vehiculo');
             })
             .catch(error => {
                 alert('Hubo un error guardando el vehículo', error);
@@ -88,20 +91,20 @@ export default function TablaComunicados(props) {
                             <TableCell><b>Origen</b></TableCell>
                             <TableCell><b>Asunto</b></TableCell>
                             <TableCell><b>Comunicado</b></TableCell>
-                            {mostrarIngreso && (
+                            {!hayVehiculo && mostrarIngreso && (
                                 <TableCell><b>Ingreso</b></TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {mensajes.map((mensaje, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={index}> {()=>{setHayVehiculo(mensaje.vehiculo !== null)}}
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{mensaje.fecha}</TableCell>
                                 <TableCell>{mensaje.origen}</TableCell>
                                 <TableCell>{mensaje.asunto}</TableCell>
                                 <TableCell>{mensaje.comunicado}</TableCell>
-                                {mostrarIngreso && (
+                                {!hayVehiculo && mostrarIngreso ?  (
                                     <TableCell>
                                         <RadioGroup
                                             value={ingresos[index] || 'NO'}
@@ -140,9 +143,9 @@ export default function TablaComunicados(props) {
                                                     Aceptar
                                                 </Button>
                                             </>
-                                        )}
+                                        ) }
                                     </TableCell>
-                                )}
+                                ) : <TableCell>{mensaje.vehiculo}</TableCell>}
                             </TableRow>
                         ))}
                     </TableBody>

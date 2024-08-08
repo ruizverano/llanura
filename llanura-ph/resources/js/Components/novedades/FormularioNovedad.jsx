@@ -36,13 +36,16 @@ export default function FormularioNovedad(auth){
     useEffect(()=>{
         setNombreUsuario(auth.auth.user.name);
         obtenerUsuariosAdministradores();
-    },[]);
+    },[]);    
 
     const submit = (e) => {
-        e.preventDefault();
-        post(route('novedad.store'));
-        alert("Novedad registrada por " + nombreUsuario );
-        reset('novedad');
+        e.preventDefault();        
+        post((route('novedad.store')) , {            
+            onSuccess: () => {
+                alert("Novedad registrada por " + nombreUsuario );
+                reset('novedad');
+            }            
+        });
     };
 
     return(

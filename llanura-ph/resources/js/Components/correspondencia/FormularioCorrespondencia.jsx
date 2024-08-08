@@ -34,15 +34,17 @@ export default function FormularioCorrespondencia(props){
             reset('portero','descripcion','origen','destino', 'entregado');            
         };
     }, []);
-    
 
     const submit = (e) => {
-        e.preventDefault();
-        post(route('correspondencia.store'))
-        alert("Correspondencia registrada por " + data.portero);
-        reset('portero','descripcion','origen','destino', 'entregado');
+        e.preventDefault();        
+        post((route('correspondencia.store')) , {            
+            onSuccess: () => {
+                alert("Correspondencia registrada por " + data.portero);
+            reset('portero','descripcion','origen','destino', 'entregado');
+            }            
+        });
     };
-
+    
     return(
         <form onSubmit={submit}>
             <input name='portero' type='hidden' value={data.portero}/>
