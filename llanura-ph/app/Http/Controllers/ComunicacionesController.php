@@ -22,7 +22,7 @@ class ComunicacionesController extends Controller
 
     public function create(): Response
     {
-        $usuario = Auth::user()->name;
+        $usuario = Auth::user()->usuario;
 
         $mensajes = $this->getComunicaciones($usuario);
 
@@ -54,18 +54,20 @@ class ComunicacionesController extends Controller
 
         $request->validate([
             'origen' => 'string',
-            'destinatario' => 'required|exists:users,name',
+            //'destinatarios' => 'required|exists:users,name',
             'asunto' => 'required|string|max:255',
             'comunicado' => 'required|string',
         ]);
 
-        $comunicacion = Comunicaciones::create([
-            'fecha' => now(),
-            'origen' => $request->origen,
-            'destinatario' => $request->destinatario,
-            'asunto' => $request->asunto,
-            'comunicado' => $request->comunicado,
-        ]);
+        for( $i = 0; $i < count($request->destinatarios); $i++ ) {
+            $comunicacion = Comunicaciones::create([
+                'fecha' => now(),
+                'origen' => $request->origen,
+                'destinatario' => $request->destinatarios[$i],
+                'asunto' => $request->asunto,
+                'comunicado' => $request->comunicado,
+            ]);   
+        }        
 
         $notificacion->send($prueba);
 

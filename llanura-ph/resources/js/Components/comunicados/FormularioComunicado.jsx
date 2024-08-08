@@ -3,10 +3,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
-import {    
-    Autocomplete,
-    TextField
-} from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
 export default function FormularioComunicados(props) {
     const [token, setToken] = useState('');
@@ -22,25 +19,35 @@ export default function FormularioComunicados(props) {
         reset,
     } = useForm({
         origen: props.auth.user.name,
-        destinatarios: [], // Modificado para soportar múltiples destinatarios
+        destinatarios: [],
         asunto: '',
         comunicado: ''
     });
 
     const [listaUsuarios, setListaUsuarios] = useState([]);
 
+    // useEffect(() => {
+    //     setListaUsuarios(props.usuarios);
+    //     return () => {
+    //         reset('origen', 'destinatarios', 'asunto', 'comunicado');
+    //     };
+    // }, [props.usuarios, reset]);
+
     useEffect(() => {
         setListaUsuarios(props.usuarios);
-        return () => {
-            reset('origen', 'destinatarios', 'asunto', 'comunicado');
-        };
-    }, [props.usuarios, reset]);
+    }, []);
 
     const submit = (e) => {
-        e.preventDefault();
+        e.preventDefault();        
         post(route('comunicaciones.store'));
-        alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
         reset('origen', 'destinatarios', 'asunto', 'comunicado');
+        alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
+        //  , {            
+        //     onSuccess: () => {
+        //         alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
+        //         reset('origen', 'destinatarios', 'asunto', 'comunicado');
+        //     }            
+        // });
     };
 
     return (
@@ -61,12 +68,14 @@ export default function FormularioComunicados(props) {
                 <InputLabel htmlFor="destinatarios" value="Destinatarios (Admin y Portería)" />
 
                 <Autocomplete
+                    name="destinatarios"
                     multiple
                     disableClearable
                     disablePortal
                     fullWidth
                     options={listaUsuarios}
                     getOptionLabel={(option) => option.usuario}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
                     onChange={(event, newValues) => {
                         setData('destinatarios', newValues.map(value => value.usuario));
                     }}
@@ -92,10 +101,10 @@ export default function FormularioComunicados(props) {
                 <TextField
                     id="asunto"
                     name="asunto"
-                    //value={data.asunto}
+                    value={data.asunto}
                     className="mt-1 block w-full"
                     autoComplete="asunto"
-                    //onChange={(e) => setData('asunto', e.target.value)}
+                    onChange={(e) => setData('asunto', e.target.value)}
                     required
                 />
                 <InputError message={errors.asunto} className="mt-2" />
@@ -106,10 +115,10 @@ export default function FormularioComunicados(props) {
                 <TextField
                     id="comunicado"
                     name="comunicado"
-                    //value={data.comunicado}
+                    value={data.comunicado}
                     className="mt-1 block w-full"
                     autoComplete="comunicado"
-                    //onChange={(e) => setData('comunicado', e.target.value)}
+                    onChange={(e) => setData('comunicado', e.target.value)}
                     required
                     multiline
                     rows={4}
@@ -118,8 +127,7 @@ export default function FormularioComunicados(props) {
             </div>
 
             <div className="flex items-center justify-end mt-4">
-                <PrimaryButton className="ms-4"
-                    disabled={processing}>
+                <PrimaryButton className="ms-4" disabled={processing}>
                     Enviar
                 </PrimaryButton>
             </div>

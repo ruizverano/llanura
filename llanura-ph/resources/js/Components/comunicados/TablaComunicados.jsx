@@ -71,7 +71,7 @@ export default function TablaComunicados(props) {
         <>
             <TableContainer component={Paper}>
                 <Typography variant="h6" component="div" style={{ padding: '16px' }}>
-                    Mensajes recibidos por {usuario.name}
+                    Mensajes recibidos por {usuario.usuario}
                 </Typography>
                 {usuario.rol_id === 2 && (
                     <GestionComunicados
