@@ -65,4 +65,9 @@ class User extends Authenticatable
         $usuarios = User::whereIn('rol_id', [1, 2])->get();
         return $usuarios;
     }
+
+    public function getResidentes(){
+        $usuarios = User::whereIn('rol_id', 3)->get();
+        return $usuarios;
+    }
 }

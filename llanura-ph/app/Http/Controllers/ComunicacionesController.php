@@ -28,13 +28,15 @@ class ComunicacionesController extends Controller
 
         $userModel = new User();
 
+        $todosUsuarios = User::all();
+
         $usuarios = $userModel->getAllUsuarios();
 
         $usuariosAdminPorteros = $userModel->getAdministradoresPorteros();
 
         return Inertia::render('Modulos/Comunicados', [
             'mensajes' => $mensajes,
-            'usuarios' => $usuariosAdminPorteros,            
+            'usuarios' => $todosUsuarios,            
         ]);
     }
 
@@ -67,7 +69,7 @@ class ComunicacionesController extends Controller
                 'asunto' => $request->asunto,
                 'comunicado' => $request->comunicado,
             ]);   
-        }        
+        }
 
         $notificacion->send($prueba);
 
@@ -76,7 +78,7 @@ class ComunicacionesController extends Controller
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
 
-    public function getComunicaciones(?string $destinatario = null){        
+    public function getComunicaciones(?string $destinatario = null){
         $mensajes = Comunicaciones::where('destinatario', $destinatario)->get();
         return $mensajes->toArray();        
     }
