@@ -60,9 +60,7 @@ class NovedadController extends Controller
     public function comunicarAdministrador(Request $request)
     {             
         $usuario = Auth::user()->name;       
-
                    
-
         return redirect()->back()->with('success', 'Mensaje enviado exitosamente!');
     }
 }

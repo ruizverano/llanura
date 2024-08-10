@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 
+use App\Models\Comunicaciones;
+
 class RegistroController extends Controller
 {
     public function create(): Response {
@@ -36,6 +38,14 @@ class RegistroController extends Controller
             'origen'=> $usuario,
             'registro'=> $request->registro,            
         ]);
+
+        $comunicacion = Comunicaciones::create([
+            'fecha' => now(),
+            'origen' => $usuario,
+            'destinatario' => $request->destinatario,
+            'asunto' => 'Reporte',
+            'comunicado' => $request->registro,
+        ]); 
 
         return redirect()->back()->with('success', 'Registrado correctamente');
     }
