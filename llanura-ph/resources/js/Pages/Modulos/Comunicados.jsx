@@ -6,7 +6,9 @@ import TablaComunicados from '@/Components/comunicados/TablaComunicados';
 import FormularioComunicados from '@/Components/comunicados/FormularioComunicado';
 
 
-export default function Comunicados({ auth, mensajes, usuarios }) {
+export default function Comunicados(props) {
+
+    const { auth, mensajes, usuarios, torres } = props
 
     const nro_rol = auth.user.rol_id;
 
@@ -21,14 +23,9 @@ export default function Comunicados({ auth, mensajes, usuarios }) {
         !mostrarFormulario ? setValorBoton('ver mensajes') : setValorBoton('nuevo mensaje');
     }
 
-    const [interfazAdmin, setInterfazAdmin] = useState(false);
-    const [interfazPortero, setInterfazPortero] = useState(false);
-    const [interfazResidente, setInterfazResidente] = useState(false);
-
     useEffect(() => {
-        setInterfazAdmin(nro_rol === 1);
-        setInterfazPortero(nro_rol === 2);
-        setInterfazResidente(nro_rol === 3);
+        console.log('torres');
+        console.log(torres);
     }, []);
 
     return (

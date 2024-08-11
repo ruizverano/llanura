@@ -9,21 +9,21 @@ import {
     MenuItem
 } from '@mui/material';
 
-export default function FormularioCorrespondencia(props){
+export default function FormularioCorrespondencia(props) {
 
-    const { 
-        data, 
-        setData, 
-        post, 
-        processing, 
-        errors, 
-        reset,         
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
     } = useForm({
-        portero:props.auth.user.name,
+        portero: props.auth.user.name,
         descripcion: '',
         origen: '',
         destino: '',
-        entregado: '',        
+        entregado: '',
     });
 
     const [listaUsuarios, setListaUsuarios] = useState([]);
@@ -31,23 +31,20 @@ export default function FormularioCorrespondencia(props){
     useEffect(() => {
         setListaUsuarios(props.usuarios);
         return () => {
-            reset('portero','descripcion','origen','destino', 'entregado');            
+            reset('portero', 'descripcion', 'origen', 'destino', 'entregado');
         };
     }, []);
 
     const submit = (e) => {
-        e.preventDefault();        
-        post((route('correspondencia.store')) , {            
-            onSuccess: () => {
-                alert("Correspondencia registrada por " + data.portero);
-            reset('portero','descripcion','origen','destino', 'entregado');
-            }            
-        });
+        e.preventDefault();
+        post(route('correspondencia.store'));
+        alert("Correspondencia registrada por " + data.portero);
+        reset('portero', 'descripcion', 'origen', 'destino', 'entregado');
     };
-    
-    return(
+
+    return (
         <form onSubmit={submit}>
-            <input name='portero' type='hidden' value={data.portero}/>
+            <input name='portero' type='hidden' value={data.portero} />
             <div>
                 <InputLabel htmlFor="descripcion" value="Descripcion" />
                 <textarea
@@ -78,7 +75,7 @@ export default function FormularioCorrespondencia(props){
                 <InputError message={errors.origen} className="mt-2" />
             </div>
 
-            <div className="mt-4">                    
+            <div className="mt-4">
                 <InputLabel htmlFor="destino" value="Destino" />
 
                 <Select
@@ -90,7 +87,7 @@ export default function FormularioCorrespondencia(props){
                     required
                 >
                     {
-                        listaUsuarios.map((usuario, index)=>(
+                        listaUsuarios.map((usuario, index) => (
                             <MenuItem key={index} value={usuario}>{usuario}</MenuItem>
                         ))
                     }
@@ -99,7 +96,7 @@ export default function FormularioCorrespondencia(props){
                 <InputError message={errors.destino} className="mt-2" />
             </div>
 
-            <div className="mt-4">                    
+            <div className="mt-4">
                 <InputLabel htmlFor="entregado" value="Entregado" />
 
                 <Select
@@ -109,16 +106,16 @@ export default function FormularioCorrespondencia(props){
                     className="mt-1 block w-full"
                     onChange={(e) => setData('entregado', e.target.value)}
                     required
-                >                    
+                >
                     <MenuItem value={1}>SI</MenuItem>
-                    <MenuItem value={0}>NO</MenuItem>                    
+                    <MenuItem value={0}>NO</MenuItem>
                 </Select>
 
                 <InputError message={errors.entregado} className="mt-2" />
             </div>
 
             <div className="flex items-center justify-end mt-4">
-                <PrimaryButton className="ms-4" 
+                <PrimaryButton className="ms-4"
                     disabled={processing}>
                     Enviar
                 </PrimaryButton>

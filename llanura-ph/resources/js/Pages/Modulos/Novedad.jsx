@@ -4,7 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FormularioNovedad from '@/Components/novedades/FormularioNovedad';
 
 
-export default function Novedad({ auth }) {
+export default function Novedad({ auth, usuarios }) {
 
     const nro_rol = auth.user.rol_id;
 
@@ -18,16 +18,6 @@ export default function Novedad({ auth }) {
         setMostrarFormulario(!mostrarFormulario);
         !mostrarFormulario ? setValorBoton('ver mensajes') : setValorBoton('nuevo mensaje');
     }
-
-    const [interfazAdmin, setInterfazAdmin] = useState(false);
-    const [interfazPortero, setInterfazPortero] = useState(false);
-    const [interfazResidente, setInterfazResidente] = useState(false);
-
-    useEffect(() => {
-        setInterfazAdmin(nro_rol === 1);
-        setInterfazPortero(nro_rol === 2);
-        setInterfazResidente(nro_rol === 3);
-    }, []);
 
     return (
         <AuthenticatedLayout
@@ -43,6 +33,7 @@ export default function Novedad({ auth }) {
                         <div className="flex justify-center">
                             <FormularioNovedad
                                 auth={auth}
+                                usuarios = {usuarios}
                             />
                         </div>
 

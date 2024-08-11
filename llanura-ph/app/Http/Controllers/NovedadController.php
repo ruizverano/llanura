@@ -17,6 +17,8 @@ class NovedadController extends Controller
 
     public function create(): Response {
         $usuario = Auth::user()->name;
+
+        $todosUsuarios = User::all();
     
         //$novedades = Correspondencia::getCorrespondencia();
 
@@ -24,7 +26,9 @@ class NovedadController extends Controller
 
         //$usuarios = $userModel->getAllUsuarios();
 
-        return Inertia::render ('Modulos/Novedad');
+        return Inertia::render ('Modulos/Novedad', [
+            'usuarios' => $todosUsuarios
+        ]);
     }
 
     public function store(Request $request){   
@@ -35,8 +39,6 @@ class NovedadController extends Controller
             'novedad' =>'required|string',             
             'origen' => 'string',
             //'destinatario' => 'required|exists:users,name',
-            //'asunto' => 'required|string|max:255',
-            //'comunicado' => 'required|string',
         ]);
 
         $correspondencia = Novedad::create([            
@@ -44,13 +46,15 @@ class NovedadController extends Controller
             'novedad'=> $request->novedad,            
         ]);
 
-        $comunicacion = Comunicaciones::create([
-            'fecha' => now(),
-            'origen' => $usuario,
-            'destinatario' => $request->destinatario,
-            'asunto' => 'Novedad',
-            'comunicado' => $request->novedad,
-        ]); 
+        for( $i = 0; $i < count($request->destinatarios); $i++ ) {
+            $comunicacion = Comunicaciones::create([
+                'fecha' => now(),
+                'origen' => $request->origen,
+                'destinatario' => $request->destinatarios[$i],
+                'asunto' => 'novedad',
+                'comunicado' => $request->novedad,
+            ]);   
+        }
 
         //$this->comunicarAdministrador($request);
 

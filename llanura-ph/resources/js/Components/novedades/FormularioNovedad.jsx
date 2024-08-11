@@ -4,10 +4,13 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { MenuItem, Select } from '@mui/material';
+import Destinatarios from '../comunicados/Destinatario';
 
-export default function FormularioNovedad(auth){
+export default function FormularioNovedad(props) {
 
-    const { 
+    const { auth, usuarios } = props;
+
+    const {
         data,
         setData,
         post,
@@ -15,62 +18,37 @@ export default function FormularioNovedad(auth){
         errors,
         reset,
     } = useForm({
-        novedad: '',
+        origen: auth.user.name,
+        destinatarios: [],
+        novedad: ''
     });
 
-    const [listaUsuarios, setListaUsuarios] = useState([]);
-
-    const [nombreUsuario, setNombreUsuario] = useState('');
-
-    const obtenerUsuariosAdministradores = () => {
-        axios.get('/get-administradores')
-            .then(response => {
-                setListaUsuarios(response.data);
-                console.log(response.data[0].usuario);
-            })
-            .catch(error => {
-                console.log('Hubo un error guardando el vehículo', error);
-            });
+    const form = {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        auth,
+        usuarios
     };
-
-    useEffect(()=>{
-        setNombreUsuario(auth.auth.user.name);
-        obtenerUsuariosAdministradores();
-    },[]);    
 
     const submit = (e) => {
-        e.preventDefault();        
-        post((route('novedad.store')) , {            
-            onSuccess: () => {
-                alert("Novedad registrada por " + nombreUsuario );
-                reset('novedad');
-            }            
-        });
+        e.preventDefault();
+        post(route('novedad.store'));
+        alert("Novedad registrada por " + auth.user.name);
+        reset('origen', 'novedad');
     };
 
-    return(
+    return (
         <form onSubmit={submit}>
-            <div className="mt-4">                    
-                <InputLabel htmlFor="destinatario" value="Administrador" />
 
-                <Select
-                    id="destinatario"
-                    name="destinatario"
-                    value={data.destinatario}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData('destinatario', e.target.value)}
-                    required
-                >
-                    {
-                        listaUsuarios.map((usuario, index)=>(
-                            <MenuItem key={index} value={usuario.usuario}>{usuario.usuario}</MenuItem>
-                        ))
-                    }
-                </Select>
+            <input name='origen' type='hidden' value={data.origen} />
 
-                <InputError message={errors.destinatario} className="mt-2" />
-            </div>
-
+            <Destinatarios
+                {...form}
+            />
             <div>
                 <InputLabel htmlFor="novedad" value="Novedad" />
                 <textarea
@@ -88,7 +66,7 @@ export default function FormularioNovedad(auth){
             </div>
 
             <div className="flex items-center justify-end mt-4">
-                <PrimaryButton className="ms-4" 
+                <PrimaryButton className="ms-4"
                     disabled={processing}>
                     Enviar
                 </PrimaryButton>

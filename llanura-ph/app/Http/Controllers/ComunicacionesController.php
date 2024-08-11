@@ -28,15 +28,14 @@ class ComunicacionesController extends Controller
 
         $userModel = new User();
 
-        $todosUsuarios = User::all();
+        $todosUsuarios = User::all();     
 
-        $usuarios = $userModel->getAllUsuarios();
-
-        $usuariosAdminPorteros = $userModel->getAdministradoresPorteros();
+        $torres = $userModel->getTorres();
 
         return Inertia::render('Modulos/Comunicados', [
             'mensajes' => $mensajes,
-            'usuarios' => $todosUsuarios,            
+            'usuarios' => $todosUsuarios,  
+            'torres' => $torres,          
         ]);
     }
 
@@ -87,7 +86,7 @@ class ComunicacionesController extends Controller
     {
         $details = [
             'title' => 'Correo desde Llanura-PH asunto:'.$asunto,
-            'body' => $origen.' te dice lo siguiente: '.$comunicado
+            'body' => $origen . 'te dice lo siguiente: '.$comunicado
         ];
 
         Mail::to('cristianmr23@gmail.com')->send(new ExampleMail($details));

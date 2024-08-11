@@ -70,4 +70,8 @@ class User extends Authenticatable
         $usuarios = User::whereIn('rol_id', 3)->get();
         return $usuarios;
     }
+
+    public function getTorres(){
+        $torres = $this->pluck('name','torre');
+    }
 }

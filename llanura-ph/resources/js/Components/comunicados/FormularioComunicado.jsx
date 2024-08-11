@@ -3,9 +3,13 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
-import { Autocomplete, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
+import Destinatarios from './Destinatario';
 
 export default function FormularioComunicados(props) {
+
+    const { auth, usuarios } = props;
+
     const [token, setToken] = useState('');
     const [notification, setNotification] = useState({ title: '', body: '' });
     const [selectedValue, setSelectedValue] = useState(null);
@@ -18,33 +22,46 @@ export default function FormularioComunicados(props) {
         errors,
         reset,
     } = useForm({
-        origen: props.auth.user.name,
+        origen: auth.user.name,
         destinatarios: [],
         asunto: '',
         comunicado: ''
     });
 
+    const form = {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        auth,
+        usuarios
+    };
+
     const [listaUsuarios, setListaUsuarios] = useState([]);
 
-    // useEffect(() => {
-    //     setListaUsuarios(props.usuarios);
-    //     return () => {
-    //         reset('origen', 'destinatarios', 'asunto', 'comunicado');
-    //     };
-    // }, [props.usuarios, reset]);
+
+    const listaAdmins = usuarios.filter(item => item.rol_id === 1);
+    const listaPorteros = usuarios.filter(item => item.rol_id === 2);
+    const listaResidentes = usuarios.filter(item => item.rol_id === 3);
 
     useEffect(() => {
-        setListaUsuarios(props.usuarios);
+        if (auth.user.rol_id === 1) {
+            console.log("está logueado un administrador");
+            setListaUsuarios(listaResidentes);
+        } else {
+            console.log("No está logueado un administrador");
+            setListaUsuarios(listaAdmins);
+        }
+
     }, []);
 
     const submit = (e) => {
-        e.preventDefault();        
-        post((route('comunicaciones.store')) , {            
-            onSuccess: () => {
-                alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
-                reset('origen', 'destinatarios', 'asunto', 'comunicado');
-            }            
-        });
+        e.preventDefault();
+        post(route('comunicaciones.store'));
+        alert("Mensaje enviado a " + data.destinatarios.join(", ") + " desde " + data.origen);
+        reset('origen', 'destinatarios', 'asunto', 'comunicado');
     };
 
     return (
@@ -61,37 +78,9 @@ export default function FormularioComunicados(props) {
                 )}
             </div> */}
 
-            <div className="mt-4">
-                <InputLabel htmlFor="destinatarios" value="Destinatarios" />
-
-                <Autocomplete
-                    name="destinatarios"
-                    multiple
-                    disableClearable
-                    disablePortal
-                    fullWidth
-                    options={listaUsuarios}
-                    getOptionLabel={(option) => option.usuario}
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                    onChange={(event, newValues) => {
-                        setData('destinatarios', newValues.map(value => value.usuario));
-                    }}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="(Admin y Portería)"
-                            style={{ fontSize: '1.3rem' }}
-                            fullWidth
-                            variant="standard"
-                            InputLabelProps={{
-                                shrink: true
-                            }}
-                        />
-                    )}
-                />
-
-                <InputError message={errors.destinatarios} className="mt-2" />
-            </div>
+            <Destinatarios
+                {...form}
+            />
 
             <div className="mt-4">
                 <InputLabel htmlFor="asunto" value="Asunto" />
