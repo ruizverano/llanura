@@ -27,7 +27,7 @@ export default function PaquetesRecibidos(props) {
                 <Typography variant="h6" component="div" style={{ padding: '16px' }}>
                     {gestion ? `Paquetes recibidos, puede gestionar la entrega con el respectivo Botón` : `Paquetes recibidos por ${usuario.name}`}
                 </Typography>
-                {usuario.rol_id===1 && (
+                {usuario.rol_id===1 && gestion &&(
                       <ReporteCorrespondencia {...props}/>
                 )}                  
                 <Table>

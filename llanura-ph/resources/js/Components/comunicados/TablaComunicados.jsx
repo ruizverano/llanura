@@ -59,16 +59,37 @@ export default function TablaComunicados(props) {
         }));
     };
 
+    // const handleRadioChange = (index, value) => {
+    //     // Actualiza el estado con el nuevo valor para el índice correspondiente
+    //     setIngresos(prevIngresos => {
+    //       const newIngresos = [...prevIngresos];
+    //       newIngresos[index] = value;          
+    //       return newIngresos;
+    //     });
+    //   };
+
     const handleGuardarVehiculo = (id) => {
         axios.post('/guardar-vehiculo', { comunicado_id: id, vehiculo: data.vehiculo })
             .then(response => {
                 alert(response.data.message);
-                reset('vehiculo');
+                reset('vehiculo','ingreso');
             })
             .catch(error => {
                 alert('Hubo un error guardando el vehículo', error);
             });
     };
+
+    // const [selectedValue, setSelectedValue] = useState('NO');
+
+    // const handleRadioChange = (event) => {
+    //     setSelectedValue(event.target.value);
+    //     alert('Valor seleccionado:', event.target.value); // Captura el valor seleccionado
+    //   };
+    
+
+    // useEffect(() => {
+    //     alert(data.ingreso);
+    //  }, [data.ingreso]);
 
     return (
         <>
@@ -107,8 +128,11 @@ export default function TablaComunicados(props) {
                                 {!hayVehiculo && mostrarIngreso ?  (
                                     <TableCell>
                                         <RadioGroup
+                                            name='ingreso'
                                             value={ingresos[index] || 'NO'}
+                                            //value={selectedValue}
                                             onChange={(e) => handleRadioChange(index, e.target.value)}
+                                            //onChange={handleRadioChange}
                                         >
                                             <FormControlLabel value="SI" control={<Radio />} label="SI" />
                                             <FormControlLabel value="NO" control={<Radio />} label="NO" />

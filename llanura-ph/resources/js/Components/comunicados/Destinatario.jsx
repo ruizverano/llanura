@@ -26,7 +26,10 @@ export default function Destinatarios(props) {
         if (auth.user.rol_id === 1) {
             setListaUsuarios(listaResidentes);
             setLabelDestino('Residentes');
-        } else {
+        } else if(auth.user.rol_id === 2){
+            setListaUsuarios(usuarios.filter(item => item.rol_id === 1 || item.rol_id === 3));
+            setLabelDestino('Admins y Residentes');
+        }else{
             setListaUsuarios(usuarios.filter(item => item.rol_id === 1 || item.rol_id === 2));
             setLabelDestino('Admins y Porteros');
         }
@@ -85,7 +88,7 @@ export default function Destinatarios(props) {
 
             {!envioPorTorres && (
                 <div className="mt-4">
-                    <InputLabel htmlFor="destinatarios" value="Residentes" />
+                    <InputLabel htmlFor="destinatarios" value="Usuarios" />
 
                     <Autocomplete
                         name="destinatarios"
