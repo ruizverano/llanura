@@ -63,7 +63,7 @@ export default function Destinatarios(props) {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             }}
         >
-            {auth.user.rol_id === 1 && (
+            {auth.user.rol_id === 1 || auth.user.rol_id === 2 && (
                 <Button
                     sx={{
                         backgroundColor: '#0099ff',
@@ -120,7 +120,7 @@ export default function Destinatarios(props) {
                 </div>
             )}
 
-            {auth.user.rol_id === 1 && envioPorTorres && (
+            {auth.user.rol_id === 1 || auth.user.rol_id === 2 && envioPorTorres && (
                 <div className="mt-4">
                     <InputLabel htmlFor="torres" value="Torres" />
 

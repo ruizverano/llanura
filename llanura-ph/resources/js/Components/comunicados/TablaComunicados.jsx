@@ -23,22 +23,24 @@ import axios from 'axios';
 
 export default function TablaComunicados(props) {
 
+    const { mensajesEntrantes, usuario, mensajesSalidos } = props;
+    
     const {
-        data,
-        watch,
-        setData,
-        post,
-        processing,
-        errors,
+        data,        
+        setData,                
         reset,
-    } = useForm();
-
-    const { mensajes, usuario } = props;
+    } = useForm();    
 
     const [mostrarIngreso, setMostrarIngreso] = useState(false);
     const [ingresos, setIngresos] = useState({});
 
-    const[hayVehiculo, setHayVehiculo] = useState(false);
+    const[mensajes, setMensajes] = useState([]);
+
+    const [mostrarMensajesEntrantes, setMostrarMensajesEntrantes] = useState(true);
+
+    const [btnMensajes, setBtnMensajes] = useState('');
+
+    const [etiqueta, setEtiqueta] = useState('');
 
     const resetear = () => {
         const initialIngresos = mensajes.reduce((acc, _, index) => {
@@ -50,6 +52,7 @@ export default function TablaComunicados(props) {
 
     useEffect(() => {
        resetear();
+    //    console.log(mensajes);
     }, [mensajes]);
 
     const handleRadioChange = (index, value) => {
@@ -59,45 +62,58 @@ export default function TablaComunicados(props) {
         }));
     };
 
-    // const handleRadioChange = (index, value) => {
-    //     // Actualiza el estado con el nuevo valor para el índice correspondiente
-    //     setIngresos(prevIngresos => {
-    //       const newIngresos = [...prevIngresos];
-    //       newIngresos[index] = value;          
-    //       return newIngresos;
-    //     });
-    //   };
+    useEffect(()=>{
+        if(mostrarMensajesEntrantes){
+            setMensajes(mensajesEntrantes);
+            setBtnMensajes('Ver Salientes');
+            setEtiqueta(`Mensajes recibidos por ${usuario.usuario}`);
+        }else{
+            setMensajes(mensajesSalidos);
+            setBtnMensajes('Ver Entrantes');
+            setEtiqueta(`Mensajes enviados por ${usuario.usuario}`);
+        }        
+    },[mostrarMensajesEntrantes]);
 
     const handleGuardarVehiculo = (id) => {
         axios.post('/guardar-vehiculo', { comunicado_id: id, vehiculo: data.vehiculo })
             .then(response => {
-                alert(response.data.message);
+                alert(response.data.message, ' registrado ', data.vehiculo);
                 reset('vehiculo','ingreso');
+                resetear();
+                window.location.reload();
             })
             .catch(error => {
                 alert('Hubo un error guardando el vehículo', error);
             });
     };
 
-    // const [selectedValue, setSelectedValue] = useState('NO');
-
-    // const handleRadioChange = (event) => {
-    //     setSelectedValue(event.target.value);
-    //     alert('Valor seleccionado:', event.target.value); // Captura el valor seleccionado
-    //   };
-    
-
-    // useEffect(() => {
-    //     alert(data.ingreso);
-    //  }, [data.ingreso]);
-
     return (
         <>
+            <Button
+                sx={{
+                    backgroundColor: '#0099ff',
+                    color: 'white',
+                    borderRadius: '4px',
+                    border: '1px solid lightblue',
+                    padding: '4px 8px',
+                    fontSize: '0.875rem',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    '&:hover': {
+                        backgroundColor: 'lightcyan',
+                        borderColor: 'lightcyan',
+                    },
+                }}
+
+                onClick={() => { setMostrarMensajesEntrantes(!mostrarMensajesEntrantes) }}
+            >
+                {btnMensajes}
+            </Button>
+
             <TableContainer component={Paper}>
                 <Typography variant="h6" component="div" style={{ padding: '16px' }}>
-                    Mensajes recibidos por {usuario.usuario}
+                    {etiqueta}
                 </Typography>
-                {usuario.rol_id === 2 && (
+                {usuario.rol_id === 2 && !mostrarMensajesEntrantes && (
                     <GestionComunicados
                         usuario={usuario}
                         mostrarIngreso={mostrarIngreso}
@@ -111,21 +127,19 @@ export default function TablaComunicados(props) {
                             <TableCell><b>Fecha dd/mm/aaaa</b></TableCell>
                             <TableCell><b>Origen</b></TableCell>
                             <TableCell><b>Asunto</b></TableCell>
-                            <TableCell><b>Comunicado</b></TableCell>
-                            {!hayVehiculo && mostrarIngreso && (
-                                <TableCell><b>Ingreso</b></TableCell>
-                            )}
+                            <TableCell><b>Comunicado</b></TableCell>                            
+                            <TableCell><b>Ingreso</b></TableCell>                            
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {mensajes.map((mensaje, index) => (
-                            <TableRow key={index}> {()=>{setHayVehiculo(mensaje.vehiculo !== null)}}
+                            <TableRow key={index}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{mensaje.fecha}</TableCell>
                                 <TableCell>{mensaje.origen}</TableCell>
                                 <TableCell>{mensaje.asunto}</TableCell>
                                 <TableCell>{mensaje.comunicado}</TableCell>
-                                {!hayVehiculo && mostrarIngreso ?  (
+                                {mensaje.vehiculo === null && mostrarIngreso ?  (
                                     <TableCell>
                                         <RadioGroup
                                             name='ingreso'
@@ -150,7 +164,9 @@ export default function TablaComunicados(props) {
                                                 />
 
                                                 <input hidden name='id' value={mensaje.id} />
-
+                                                <Typography variant="h12" component="div" style={{ padding: '8px' }}>
+                                                    Sin placa?, aceptar para ingreso a pie
+                                                </Typography>
                                                 <Button
                                                     variant="contained"
                                                     sx={{

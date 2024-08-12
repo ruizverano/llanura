@@ -21,9 +21,11 @@ class CorrespondenciaController extends Controller
 
         $usuarios = $userModel->getAllUsuarios();
 
+        $todosUsuarios = User::all();   
+
         return Inertia::render ('Modulos/Correspondencia', [            
             'paquetes' => $paquetes,
-            'usuarios' => $usuarios,
+            'usuarios' => $todosUsuarios,
             'gestion' => true,
         ]);
     }
@@ -35,11 +37,13 @@ class CorrespondenciaController extends Controller
 
         $userModel = new User();
 
-        $usuarios = $userModel->getAllUsuarios();
+        //$usuarios = $userModel->getAllUsuarios();
+
+        $todosUsuarios = User::all();
 
         return Inertia::render ('Modulos/Correspondencia', [            
             'paquetes' => $paquetes,
-            'usuarios' => $usuarios,
+            'usuarios' => $todosUsuarios,
             'gestion' => false,
         ]);
     }
@@ -50,19 +54,21 @@ class CorrespondenciaController extends Controller
             'portero' => 'required|string',
             'descripcion' => 'required|string|max:255',
             'origen' => 'required|string',
-            'destino' =>'required|string',
+            //'destino' =>'required|string',
             'entregado' => 'required'
         ]);
         
-        $correspondencia = Correspondencia::create([
-            'fecha' => now(),
-            'portero' => $request->portero,
-            'descripcion'=> $request->descripcion,
-            'origen'=> $request->origen,
-            'destino'=> $request->destino,
-            'entregado'=> $request->entregado,
-        ]);
-
+        for( $i = 0; $i < count($request->destinatarios); $i++ ) {
+            $correspondencia = Correspondencia::create([
+                'fecha' => now(),
+                'portero' => $request->portero,
+                'descripcion'=> $request->descripcion,
+                'origen'=> $request->origen,
+                'destino'=> $request->destinatarios[$i],
+                'entregado'=> $request->entregado,
+            ]);    
+        }
+        
         return redirect()->back()->with('success', 'Registrado correctamente');
     }
 

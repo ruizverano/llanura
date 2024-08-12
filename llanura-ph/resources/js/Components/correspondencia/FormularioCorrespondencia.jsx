@@ -8,8 +8,11 @@ import {
     Select,
     MenuItem
 } from '@mui/material';
+import Destinatarios from '../comunicados/Destinatario';
 
 export default function FormularioCorrespondencia(props) {
+
+    const { auth, usuarios } = props;
 
     const {
         data,
@@ -19,17 +22,25 @@ export default function FormularioCorrespondencia(props) {
         errors,
         reset,
     } = useForm({
-        portero: props.auth.user.name,
+        portero: auth.user.name,
         descripcion: '',
         origen: '',
         destino: '',
         entregado: '',
     });
 
-    const [listaUsuarios, setListaUsuarios] = useState([]);
+    const form = {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        auth,
+        usuarios
+    };
 
-    useEffect(() => {
-        setListaUsuarios(props.usuarios);
+    useEffect(() => {        
         return () => {
             reset('portero', 'descripcion', 'origen', 'destino', 'entregado');
         };
@@ -78,20 +89,9 @@ export default function FormularioCorrespondencia(props) {
             <div className="mt-4">
                 <InputLabel htmlFor="destino" value="Destino" />
 
-                <Select
-                    id="destino"
-                    name="destino"
-                    value={data.destino}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData('destino', e.target.value)}
-                    required
-                >
-                    {
-                        listaUsuarios.map((usuario, index) => (
-                            <MenuItem key={index} value={usuario}>{usuario}</MenuItem>
-                        ))
-                    }
-                </Select>
+                <Destinatarios
+                    {...form}
+                />
 
                 <InputError message={errors.destino} className="mt-2" />
             </div>

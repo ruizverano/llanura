@@ -24,18 +24,18 @@ class ComunicacionesController extends Controller
     {
         $usuario = Auth::user()->usuario;
 
+        $usuarioName = Auth::user()->name;
+
         $mensajes = $this->getComunicaciones($usuario);
 
-        $userModel = new User();
+        $mensajesSalidos = $this->getComunicacionesSalidas($usuarioName);
 
-        $todosUsuarios = User::all();     
-
-        $torres = $userModel->getTorres();
+        $todosUsuarios = User::all();
 
         return Inertia::render('Modulos/Comunicados', [
             'mensajes' => $mensajes,
             'usuarios' => $todosUsuarios,  
-            'torres' => $torres,          
+            'mensajesSalidos' => $mensajesSalidos,          
         ]);
     }
 
@@ -82,6 +82,11 @@ class ComunicacionesController extends Controller
         return $mensajes->toArray();        
     }
 
+    public function getComunicacionesSalidas(?string $origen = null){
+        $mensajes = Comunicaciones::where('origen', $origen)->get();
+        return $mensajes->toArray();        
+    }
+
     public function sendMail(String $origen, String $asunto, String $comunicado)
     {
         $details = [
@@ -95,14 +100,19 @@ class ComunicacionesController extends Controller
     }
 
     public function guardarVehiculo(Request $request)
-    {
+    {        
         $request->validate([
             'comunicado_id' => 'required|exists:comunicaciones,id',
-            'vehiculo' => 'required|string|max:255'
-        ]);
+            //'vehiculo' => 'required|string|max:255'
+        ]);        
 
         $comunicado = Comunicaciones::find($request->comunicado_id);
-        $comunicado->vehiculo = $request->vehiculo;
+
+        if($request->vehiculo != ''){
+            $comunicado->vehiculo = $request->vehiculo;   
+        }else{
+            $comunicado->vehiculo = 'Ingreso a pie';
+        }
         $comunicado->save();
 
         return response()->json(['message' => 'Vehiculo guardado exitosamente'], 200);

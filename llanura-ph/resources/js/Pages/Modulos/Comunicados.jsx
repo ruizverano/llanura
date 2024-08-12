@@ -8,9 +8,7 @@ import FormularioComunicados from '@/Components/comunicados/FormularioComunicado
 
 export default function Comunicados(props) {
 
-    const { auth, mensajes, usuarios, torres } = props
-
-    const nro_rol = auth.user.rol_id;
+    const { auth, mensajes, usuarios, mensajesSalidos} = props
 
     const [mostrarTabla, setMostrarTabla] = useState(true);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -22,11 +20,6 @@ export default function Comunicados(props) {
         setMostrarFormulario(!mostrarFormulario);
         !mostrarFormulario ? setValorBoton('ver mensajes') : setValorBoton('nuevo mensaje');
     }
-
-    useEffect(() => {
-        console.log('torres');
-        console.log(torres);
-    }, []);
 
     return (
         <AuthenticatedLayout
@@ -41,7 +34,8 @@ export default function Comunicados(props) {
 
                         {mostrarTabla && (
                             <TablaComunicados
-                                mensajes={mensajes}
+                                mensajesEntrantes={mensajes}                                
+                                mensajesSalidos = {mensajesSalidos}
                                 usuario={auth.user}
                             />
                         )}

@@ -7,7 +7,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import PaquetesRecibidos from '@/Components/correspondencia/TablaCorrespondencia';
 
 
-export default function Correspondencia({ auth, paquetes, usuarios, gestion }) {
+export default function Correspondencia(props) {
+
+    const { auth, paquetes, usuarios, gestion } = props;
 
     const nro_rol = auth.user.rol_id;
 
@@ -22,15 +24,8 @@ export default function Correspondencia({ auth, paquetes, usuarios, gestion }) {
         !mostrarFormulario ? setValorBoton('ver paquetes') : setValorBoton('nuevo paquete');
     }
 
-    const [interfazAdmin, setInterfazAdmin] = useState(false);
-    const [interfazPortero, setInterfazPortero] = useState(false);
-    const [interfazResidente, setInterfazResidente] = useState(false);
-
-    useEffect(() => {
-        setInterfazAdmin(nro_rol === 1);
-        setInterfazPortero(nro_rol === 2);
-        setInterfazResidente(nro_rol === 3);
-    }, []);
+    console.log('usuarios');
+    console.log(usuarios);
 
     return (
         <AuthenticatedLayout
