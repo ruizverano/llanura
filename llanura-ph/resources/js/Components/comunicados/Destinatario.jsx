@@ -17,6 +17,7 @@ export default function Destinatarios(props) {
     const [listaUsuarios, setListaUsuarios] = useState([]);
     const [destinatariosFiltrados, setDestinatariosFiltrados] = useState([]);
     const listaResidentes = usuarios.filter(item => item.rol_id === 3);
+    const listaResidentesPorteros = usuarios.filter(item => item.rol_id === 2 || item.rol_id === 3);
     const listaTorres = [...new Set(listaResidentes.map(usuario => usuario.torre))];
     const [labelDestino, setLabelDestino] = useState('');
 
@@ -24,8 +25,8 @@ export default function Destinatarios(props) {
 
     useEffect(() => {
         if (auth.user.rol_id === 1) {
-            setListaUsuarios(listaResidentes);
-            setLabelDestino('Residentes');
+            setListaUsuarios(listaResidentesPorteros);
+            setLabelDestino('Residentes y Porteros');
         } else if(auth.user.rol_id === 2){
             setListaUsuarios(usuarios.filter(item => item.rol_id === 1 || item.rol_id === 3));
             setLabelDestino('Admins y Residentes');
@@ -63,7 +64,7 @@ export default function Destinatarios(props) {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             }}
         >
-            {auth.user.rol_id === 1 || auth.user.rol_id === 2 && (
+            {(auth.user.rol_id === 1 || auth.user.rol_id === 2) && (
                 <Button
                     sx={{
                         backgroundColor: '#0099ff',
@@ -81,7 +82,7 @@ export default function Destinatarios(props) {
 
                     onClick={() => { setEnvioPorTorres(!envioPorTorres) }}
                 >
-                    {envioPorTorres ? 'Residentes' : 'Torres'}
+                    {envioPorTorres ? 'A personas' : 'Por torres'}
                 </Button>
             )}
 
@@ -120,7 +121,7 @@ export default function Destinatarios(props) {
                 </div>
             )}
 
-            {auth.user.rol_id === 1 || auth.user.rol_id === 2 && envioPorTorres && (
+            {(auth.user.rol_id === 1 || auth.user.rol_id === 2) && envioPorTorres && (
                 <div className="mt-4">
                     <InputLabel htmlFor="torres" value="Torres" />
 
