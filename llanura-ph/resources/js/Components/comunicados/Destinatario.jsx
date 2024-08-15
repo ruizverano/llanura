@@ -18,7 +18,7 @@ export default function Destinatarios(props) {
     const [destinatariosFiltrados, setDestinatariosFiltrados] = useState([]);
     const listaResidentes = usuarios.filter(item => item.rol_id === 3);
     const listaResidentesPorteros = usuarios.filter(item => item.rol_id === 2 || item.rol_id === 3);
-    const listaTorres = [...new Set(listaResidentes.map(usuario => usuario.torre))];
+    const listaTorres = [...new Set(listaResidentes.map(usuario => usuario.torre))];    
     const [labelDestino, setLabelDestino] = useState('');
 
     const [envioPorTorres, setEnvioPorTorres] = useState(false);
@@ -53,6 +53,10 @@ export default function Destinatarios(props) {
     useEffect(() => {
         console.log('destinatarios');
         console.log(data.destinatarios);
+
+    console.log('listaTorres');
+    console.log(listaTorres);
+    
     }, [data.destinatarios]);
 
     return (

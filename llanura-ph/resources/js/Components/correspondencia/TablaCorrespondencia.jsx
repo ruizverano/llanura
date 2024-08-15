@@ -50,7 +50,7 @@ export default function PaquetesRecibidos(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paquetes.filter(paquete => gestion || paquete.destino === usuario.name).map((paquete, index) => (
+                        {paquetes.filter(paquete => gestion || paquete.destino === usuario.usuario).map((paquete, index) => (
                             <TableRow key={index}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{paquete.fecha}</TableCell>
